@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head th:replace="mainheader.html :: mainHead"></head>
+
+<script type="text/javascript">
+
+    function check_pw(){
+
+        var newPwd = $('#password').val();
+        var confirmPwd = $('#passwordCheck').val();
+        var SC = ["!","@","#","$","%","^","&","*"];
+        var check_SC = 0;
+
+        if(newPwd.length < 8 || newPwd.length>16){
+            window.alert('비밀번호는 8글자 이상, 16글자 이하만 이용 가능합니다.');
+            $('#password').val('');
+            return;
+        }
+        for(var i=0;i<SC.length;i++){
+            if(newPwd.indexOf(SC[i]) != -1){
+                check_SC = 1;
+            }
+        }
+        if(check_SC == 0){
+            window.alert('특수문자를 한 개 이상 포함해야합니다.')
+            $('#password').val('');
+            return;
+        }
+
+        if(newPwd != '' && confirmPwd != ''){
+            if(newPwd == confirmPwd){
+                $('#checkPw').text('비밀번호가 일치합니다.');
+                $("#checkPw").css("color","blue");
+            }
+            else{
+                $('#checkPw').text('비밀번호가 일치하지 않습니다.');
+                $("#checkPw").css("color","red");
+            }
+        }
+    }
+
+
+
+    function check(){
+        if ( document.getElementById('userid').value =='') {
+            window.alert('아이디를 입력해주세요');
+        }
+        else if(document.getElementById('password').value ==''){
+            window.alert('패스워드를 입력해주세요');
+        }
+        else if(document.getElementById('passwordCheck').value ==''){
+            window.alert('패스워드를 입력해주세요');
+        }
+        else if(document.getElementById('username').value ==''){
+            window.alert('이름을 입력해주세요');
+        }
+        else if(document.getElementById('userAge').value ==''){
+            window.alert('나이를 입력해주세요');
+        }
+        else{
+            userJoin();
+        }
+    }
+
+
+    function userJoin() {
+
+        $.ajax({
+            url: "/registerUser",
+            type: "GET",
+            data: {
+                id: document.getElementById('userid').value,
+                password: document.getElementById('password').value,
+                username: document.getElementById('username').value,
+                age: document.getElementById('userAge').value
+            },
+            success: function (data) {
+                if(data=='Success' ) {
+                    window.alert("회원가입이 완료되었습니다");
+                    location.href="/";
+                }
+                else {
+                    window.alert("이미 사용중인 아이디 입니다.");
+                    document.getElementById('userid').value="";
+                }
+
+            }
+        });
+    }
+
+
+
+</script>
+
+
+
+
+<body class="bg-gradient-primary">
+
+
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+
+
+        <div class="col-xl-5 col-lg-12 col-md-9" id="join" >
+
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-3">
+                    <!-- Nested Row within Card Body -->
+
+
+                    <div class="row"  >
+
+
+                        <div class="col-lg-12">
+                            <div >
+
+                                <div class="mt-1">
+                                    <h1 class="h4 text-gray-900 mb-2 font-weight-bold" style="font-size: 35px" >회원 가입</h1>
+                                </div>
+
+                                <input  class="form-control form-control-user mb-3"
+                                        id="userid"
+                                        placeholder="아이디">
+
+                                <input  class="form-control form-control-user mb-3"
+                                        id="password" type="password"
+                                        placeholder="비밀번호" onchange="check_pw()">
+
+                                <input  class="form-control form-control-user mb-1"
+                                        id="passwordCheck" type="password"
+                                        placeholder="비밀번호 재확인" onchange="check_pw()">
+
+                                <div class="mb-2" style="text-align: left">
+                                    <span id="checkPw">&nbsp</span>
+                                </div>
+
+                                <input  class="form-control form-control-user mb-3"
+                                        id="username"
+                                        placeholder="이름">
+
+                                <input  class="form-control form-control-user mb-3"
+                                        id="userAge" type="number" min="1" max="110"
+                                        placeholder="나이">
+
+
+                                <button class="btn btn-primary btn-user btn-block" id="button3" onclick="check()">
+                                    회원 가입
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+
+
+</body>
+
+
+<footer th:replace="mainfooter.html :: footer" ></footer>
+
+</html>
