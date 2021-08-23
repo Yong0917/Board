@@ -54,7 +54,7 @@ public class RegisterController {
             String secretKey = generateSecretKey();
             memberVo.setSecretKey(secretKey);
 
-            String qrId = memberVo.getId();
+            String qrId = "Board Community"+"("+memberVo.getId()+")";
             String barcodeUrl = getGoogleAuthenticatorBarCode(secretKey, qrId);
             memberVo.setQrCord(barcodeUrl);
             memberVo.setAuth("User");
@@ -112,10 +112,6 @@ public class RegisterController {
 
 
                 session.setAttribute("loginCheck", true);
- /*                session.setAttribute("email",memberVo.getEmail());
-                session.setAttribute("auth",user.getAuth());
-                session.setAttribute("rscgrp",user.getRscGrp());
-                session.setAttribute("step",user.getStep());*/
 
                 return "Success";
             }
@@ -144,10 +140,10 @@ public class RegisterController {
             MemberVo user = registerService.selectMember(memberVo.getId());
             System.out.println(user.getAuth());
             session.setAttribute("loginCheck",true);
-            session.setAttribute("email",memberVo.getId());
+            session.setAttribute("id",memberVo.getId());
             session.setAttribute("auth",user.getAuth());
-            session.setAttribute("rscgrp",user.getUsername());
-            session.setAttribute("step",user.getAge());
+            session.setAttribute("name",user.getUsername());
+            session.setAttribute("age",user.getAge());
             return "success";
         }
         else {
