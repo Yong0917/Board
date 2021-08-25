@@ -9,6 +9,7 @@
 
 <script type="text/javascript">
     window.onload = function () {
+
         commentList();
     }
 
@@ -27,10 +28,12 @@
             data : {bno: bno},
             success : function(data){
                 var a ='';
-                var emailCheck = document.getElementById("commentWriter").value;
+                var emailCheck = document.getElementById("commentWriter").value; //댓글 작성자
+                var authCheck = document.getElementById("commentAuth").value; // 권한 체크
                 $.each(data, function(key, value){
                     a += '<div class="commentInfo'+value.cno+'">'+'댓글번호 : '+value.cno+' / 작성자 : '+value.writer;
-                    if (emailCheck==value.writer){
+                    if (emailCheck==value.writer || authCheck=='ADMIN') //댓글 작성자와 관리자만 삭제 가능하게 설정
+                    {
                         a += '<a class="btn btn-primary ml-2 mt-1" hidden="true" onclick="commentUpdate('+value.cno+',\''+value.content+'\');"> 수정 </a>';
                         a += '<a class="btn btn-primary ml-2 mt-1" onclick="commentDelete('+value.cno+'); location.reload();"> 삭제 </a> </div>';
                     }
@@ -167,9 +170,15 @@
                                     </div>
 
                                 </div>
+
+
                                 <button type="button" class="btn btn-primary mt-2 ml-3 mb-1" onclick="location.href='/main'">목록</button>
-                                <button type="button" class="btn btn-primary mt-2 mr-3 mb-1 float-right" th:onclick="'location.href = \'' + @{/update?bno={bno}(bno=${DETAIL.bno})} + '\''">수정</button>
-                                <button type="button" class="btn btn-primary mt-2 mr-3 mb-1 float-right" data-toggle="modal" data-target="#deleteCheck">삭제</button>
+                                <!--수정 버튼을 자기것만 보이게 설정-->
+                                <button type="button" class="btn btn-primary mt-2 mr-3 mb-1 float-right" th:if="${session['id'] == DETAIL.writer}"
+                                        th:onclick="'location.href = \'' + @{/update?bno={bno}(bno=${DETAIL.bno})} + '\''">수정</button>
+                                <!--삭제 버튼을 관리자도 볼 수 있게 설정-->
+                                <button type="button" class="btn btn-primary mt-2 mr-3 mb-1 float-right" th:if="${session['id'] == DETAIL.writer} or ${session['auth'] == 'ADMIN'}"
+                                        data-toggle="modal" data-target="#deleteCheck">삭제</button>
 
 
                                 <div class="container">
@@ -178,6 +187,7 @@
                                         <div class="input-group">
                                             <input type="hidden" id="bno1" name="bno" th:value="${DETAIL.bno}"/>
                                             <input type="hidden" id="commentWriter" name="writer" th:value="${session['id']}"/>
+                                            <input type="hidden" id="commentAuth" name="cAuth" th:value="${session['auth']}"/>
                                             <textarea class="form-control mb-4" id="content" name="content" placeholder="내용을 입력하세요."></textarea>
                                             <span class="input-group-btn">
                                     <button class="btn btn-primary ml-1" type="button" name="commentInsertBtn" onclick="registerComment()">등록</button>
