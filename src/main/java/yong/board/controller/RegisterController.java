@@ -28,19 +28,19 @@ public class RegisterController {
         this.registerService = registerService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/") //root 로그인화면
     public String login(Model model) {
 
         return "Login";
     }
 
-    @GetMapping("/userjoin")
+    @GetMapping("/userjoin")    //회원가입
     public String newUser(Model model) {
 
         return "userJoin";
     }
 
-    @ResponseBody
+    @ResponseBody   //회원가입 로직
     @RequestMapping(value = "/registerUser")
     public String joinMember(MemberVo memberVo){
 
@@ -54,39 +54,19 @@ public class RegisterController {
             String secretKey = generateSecretKey();
             memberVo.setSecretKey(secretKey);
 
-            String qrId = "Board Community"+"("+memberVo.getId()+")";
-            String barcodeUrl = getGoogleAuthenticatorBarCode(secretKey, qrId);
+            String qrId = "Board Community"+"("+memberVo.getId()+")"; //QRcord 화면에 표시할 id
+            String barcodeUrl = getGoogleAuthenticatorBarCode(secretKey, qrId);     //sercret key와 qrid 넘겨줌
             memberVo.setQrCord(barcodeUrl);
             memberVo.setAuth("User");
 
-            /*try {
-                sendregistermail(memberVo.getEmail(),firstPasswd);
-                //sendtmmail(memberVo.getEmail());
-
-                // sendMailRepeatRequest(memberVo.getEmail());
-            } catch (MessagingException e) {
-                logger.error(CommonUtil.getPrintStackTrace(e));
-            }*/
             registerService.joinUser(memberVo);
             retVal = "Success";
         }
         // 기존에 요청했던 고객일 경우
         else{
-            // 계정이 이미 있으므로 신청 내역이 있다는 내용 메일 전송해 주기
-           /* try {
-                sendMailRepeatRequest(memberVo.getEmail());
-            } catch (MessagingException e) {
-                logger.error(CommonUtil.getPrintStackTrace(e));
-            }*/
+
             retVal = "fail";
         }
-
-        // 고객 유입 메일 전송
-        /*try {
-            sendMailCustomerInflux(memberVo.getEmail());
-        } catch (MessagingException e) {
-            logger.error(CommonUtil.getPrintStackTrace(e));
-        }*/
 
         return retVal;
     }
@@ -99,18 +79,18 @@ public class RegisterController {
 
         MemberVo user = (MemberVo) registerService.loadUserByUsername(memberVo.getId());
 
-        if (user == null) {
+        if (user == null) { // user값 체크
             return "idNull";
 
         } else {
-
+            // 비밀번호 비교
             if (!passwordEncoder.matches(memberVo.getPassword(), user.getPassword())) {
 
                 return "pwCheck";
 
             } else {
 
-
+                //검증 성공
                 session.setAttribute("loginCheck", true);
 
                 return "Success";
@@ -119,26 +99,26 @@ public class RegisterController {
         }
     }
 
-    @ResponseBody
+    @ResponseBody   //qrcord 불러오기
     @RequestMapping(value = "/getImage.do")
     public String googleUrl(MemberVo memberVo) {
         String userQrCord = registerService.selectQrCord(memberVo);
         return userQrCord;
     }
 
-    @ResponseBody
+    @ResponseBody       //구글 유효값 인증
     @RequestMapping(value = "/googleVerify.do")
     public String equalCode(MemberVo memberVo, HttpSession session) {
 
         String userSecretKey = registerService.selectSecretKey(memberVo);
         String inputCode =  memberVo.getMfaCode();
-        //TOTPTokenValidation.
-        //업로드시주석해제
 
+        //입력한 값과 secretkey 비교
         if (TOTPTokenValidation.validate(inputCode,userSecretKey)) {
             //     if (TOTPTokenValidation.validate(inputCode,userSecretKey)) {
             MemberVo user = registerService.selectMember(memberVo.getId());
-            System.out.println(user.getAuth());
+
+            //로그인 성공 시 세션값 설정
             session.setAttribute("loginCheck",true);
             session.setAttribute("id",memberVo.getId());
             session.setAttribute("auth",user.getAuth());
@@ -167,7 +147,7 @@ public class RegisterController {
 
         String GOOGLE_URL = "https://chart.googleapis.com/chart?chs=100x100&chld=M|0&cht=qr&chl=";
 
-        try {//igloosec          //igloosec
+        try {
             return GOOGLE_URL+"otpauth://totp/"
                     + URLEncoder.encode(issuer , "UTF-8").replace("+", "%20")
                     + "?secret=" + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")

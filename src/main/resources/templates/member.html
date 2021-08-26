@@ -1,0 +1,460 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html">
+
+<head th:replace="mainheader.html :: mainHead"></head>
+
+<script type="text/javascript">
+
+    let userId =  "";
+
+    window.onload = function () {
+        userId = $('#id').text();
+
+        getMemberList(); // 사용자관리
+        getUserInfo();  //회원정보
+
+        clearPwdUpdateModal();      //수정완료 후 clear
+
+        $("#changePwdBtn").on("click", function(){ changePwd() });
+
+    }
+
+    let buttonclicked;
+
+    function getMemberList() {
+
+        $.ajax({
+            url: "/getMemberList.do",
+            type: "GET",
+            success: function (data) {
+                tablelength = data.length;
+                var table = $('#userTable').dataTable({
+                    aaData: data,
+
+                    bPaginate: false,
+                    bLengthChange: true,
+                    bInfo: false,
+                    bAutoWidth: false,
+                    processing: true,
+                    ordering: true,
+                    serverSide: false,
+                    searching: false,
+
+                    columns: [
+                        /*  { title: "", "defaultContent": "<button onclick='deleteitem();'>Delete</button>" },*/
+                        {data: "id"},
+                        {data: "username"},
+                        {data: "age"},
+                        {data: "auth"},
+                        {data: "regDate"},
+                        {data: "id",
+                            "render": function(data, type, row){
+                                if(type=='display'){
+                                    data = '<button class="mb-2 mr-2 btn btn-danger btn-sm">Del</button>';
+                                }
+                                return data;
+                            }
+                        }
+                    ],
+
+                });
+
+
+                var table = $('#userTable').DataTable();
+
+
+                $('#userTable tbody').on('click', 'tr .btn', function () {
+                    var tr = $(this).closest('tr');
+                    var dt = table.row( tr ).data();
+
+                  if($(this).text() == "Del"){
+
+                        document.getElementById("emailChk").innerHTML=dt.id;
+                        document.getElementById("authChk").innerHTML=dt.auth;
+                        $('#deleteModal').modal("show");
+                        //deleteUser();
+
+                    }
+                });
+
+
+
+
+            }, error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+
+    }
+
+
+    function deleteUser(){
+
+
+        $.ajax({
+            url: "/deleteUser",
+            type: "POST",
+            data: {
+                id: document.getElementById('emailChk').innerHTML,
+                auth: document.getElementById('authChk').innerHTML
+            },
+
+            success: function (data) {
+                window.alert("삭제가 완료되었습니다.");
+                location.reload();
+
+            }
+        })
+    }
+
+
+    function getUserInfo() {
+
+        $.ajax({
+            url: "/getUserInfo",
+            type: "POST",
+            data: {
+                id: userId
+            },
+            success: function (data) {
+                if(data == '') {
+                    return;
+                }
+                $('#idInput').val(data.id);
+                $('#nameInput').val(data.username);
+                $('#ageInput').val(data.age);
+                $('#authInput').val(data.auth);
+                $('#regdateInput').val(data.regDate.substring(0, 10));
+            }, error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+
+    }
+
+    function changePwd() {
+        var currentPwd = $('#currentPwInput').val();
+        var newPwd = $('#newPwInput').val();
+        var confirmPwd = $('#confirmPwInput').val();
+
+
+        if(currentPwd == '' || newPwd == '' || confirmPwd == '') {
+            alert('값을 입력해 주세요.');
+            $('#currentPwInput').val();
+            $('#newPwInput').val();
+            $('#confirmPwInput').val();
+            return;
+        }
+
+        if(currentPwd == newPwd) {
+            alert('동일한 패스워드로는 변경 할 수 없습니다.');
+            return;
+        }
+
+        if(newPwd != confirmPwd){
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        modifyUserPwd();
+    }
+
+    function modifyUserPwd(){
+        $.ajax({
+            url: "/modifyUserPwd",
+            type: "POST",
+            data: {
+                id: userId
+                ,currentPwd: $('#currentPwInput').val()
+                ,newPwd: $('#newPwInput').val()
+            },
+            success: function (data) {
+                if(data != '') {
+                    alert(data);
+                } else {
+                    alert("비밀번호가 변경되었습니다.");
+                    $('#userPasswordModal').modal("hide");
+                    clearPwdUpdateModal();
+                }
+            }, error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        })
+    }
+
+    function check_pw(){
+        var newPwd = $('#newPwInput').val();
+        var confirmPwd = $('#confirmPwInput').val();
+        var SC = ["!","@","#","$","%","^","&","*"];
+        var check_SC = 0;
+
+        if(newPwd.length < 8 || newPwd.length>16){
+            window.alert('비밀번호는 8글자 이상, 16글자 이하만 이용 가능합니다.');
+            $('#newPwInput').val('');
+            return;
+        }
+        for(var i=0;i<SC.length;i++){
+            if(newPwd.indexOf(SC[i]) != -1){
+                check_SC = 1;
+            }
+        }
+        if(check_SC == 0){
+            window.alert('특수문자를 한 개 이상 포함해야합니다.')
+            $('#newPwInput').val('');
+            return;
+        }
+
+        if(newPwd != '' && confirmPwd != ''){
+            if(newPwd == confirmPwd){
+                $('#checkPw').text('비밀번호가 일치합니다.');
+                $("#checkPw").css("color","blue");
+            }
+            else{
+                $('#checkPw').text('비밀번호가 일치하지 않습니다.');
+                $("#checkPw").css("color","red");
+            }
+        }
+    }
+
+
+    function clearPwdUpdateModal() {
+        $('#currentPwInput').val('');
+        $('#newPwInput').val('');
+        $('#confirmPwInput').val('');
+        $('#checkPw').text('');
+    }
+
+</script>
+
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:insert="sidemenu.html :: side_menu"></div>
+
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+
+            <div th:insert="topmenu.html :: top_menu"></div>
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-2 ml-4" >
+                <h1 class="h3 mb-0 text-gray-800"> 회원 정보</h1>
+            </div>
+
+            <div class="row mb-2 ml-2">
+                <!-- Area Chart -->
+                <div class="col-xl-6 col-lg-5">
+                    <div class="card shadow">
+
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="card shadow h-100">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <table class="table-bordered col-xl-12 col-lg-10" cellspacing="0" id="userInfoTable">
+                                            <thead style="text-align: center; position: sticky; top: 0px; background-color: white;">
+                                            <tr>
+                                                <th style="width:30%">아이디</th>
+                                                <td>
+                                                    <input type="text" size="20" style="width:100%; border:0" id="idInput" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th style="width:30%">이름</th>
+                                                <td>
+                                                    <input type="text" size="20" style="width:100%; border:0" id="nameInput" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th style="width:30%">나이</th>
+                                                <td>
+                                                    <input type="text" size="20" style="width:100%; border:0" id="ageInput" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th style="width:30%">권한</th>
+                                                <td>
+                                                    <input type="text" size="20" style="width:100%; border:0" id="authInput" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th style="width:30%">등록일</th>
+                                                <td>
+                                                    <input type="text" size="20" style="width:100%; border:0" id="regdateInput" disabled>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th style="width:30%">비밀번호</th>
+                                                <td>
+                                                    <button style="color:#fff; background-color:#36b9cc; border-color:#36b9cc; float:left; font-size:small" data-toggle="modal" data-target="#userPasswordModal" >
+                                                        비밀번호 변경
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Begin Page Content -->
+            <div class="container-fluid"  th:if="${session['auth']} =='ADMIN'">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">사용자 관리</h1>
+
+                </div>
+
+                <div class="row">
+
+                    <!-- Area Chart -->
+                    <div class="col-xl-12 col-lg-10">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+
+                            <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="color:white;">
+                                <h6 class="m-0 font-weight-bold text-primary">사용자 리스트</h6>
+
+                                <span id="emailChk"  hidden="true"></span>
+                                <span id="authChk"  hidden="true"></span>
+
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body" style="height: 450px">
+                                <div class="card shadow h-100 py-2">
+                                    <div class="table-responsive" style="overflow:auto; height: 100%">
+                                        <table class="table table-bordered" id="userTable" cellspacing="0">
+                                            <thead style="text-align: center; position: sticky; top: 0px; background: white; ">
+                                            <tr>
+
+                                                <th>아이디</th>
+                                                <th>이름</th>
+                                                <th>나이</th>
+                                                <th>권한</th>
+                                                <th>등록일</th>
+                                                <th></th>
+
+                                            </tr>
+                                            </thead>
+
+                                            <tbody style="text-align: center">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <footer th:replace="mainfooter.html :: footer"></footer>
+
+    </div>
+
+
+</div>
+
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">삭제하시겠습니까?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div>
+
+                <text class="form-control">사용자가 작성한 게시글, 댓글이 모두 삭제됩니다.</text>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" onclick="deleteUser()">삭제</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="userPasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userPasswordModalLabel">비밀번호 변경</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div>
+                <div class="modal-content">
+                    <table class="table-bordered col-xl-10 col-lg-8" style="margin-left:auto;margin-right:auto" cellspacing="0">
+                        <thead style="text-align: center; position: sticky; top: 0px; background-color: white;">
+                        <tr>
+                            <th style="width:30%">현재 비밀번호</th>
+                            <td>
+                                <input type="password" size="20" style="width:100%; border:0" id="currentPwInput">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:30%">새 비밀번호</th>
+                            <td>
+                                <input type="password" size="20" style="width:100%; border:0" id="newPwInput" onchange="check_pw()">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width:30%">비밀번호 확인</th>
+                            <td>
+                                <input type="password" size="20" style="width:100%; border:0" id="confirmPwInput"  onchange="check_pw()">
+                            </td>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div style="text-align: center">
+                        <span id="checkPw">&nbsp</span>
+                    </div>
+                </div>
+                <div class="modal-footer" style="float:left">
+                    <button class="btn btn-primary" type="button" id="changePwdBtn">저장</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+
+</html>

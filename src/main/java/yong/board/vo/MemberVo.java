@@ -16,6 +16,9 @@ public class MemberVo implements UserDetails {
     private String secretKey;
     private String qrCord;
     private String mfaCode;
+    private String currentPwd;
+    private String newPwd;
+
 
     public String getId() {
         return id;
@@ -113,5 +116,21 @@ public class MemberVo implements UserDetails {
 
     public void setMfaCode(String mfaCode) {
         this.mfaCode = mfaCode;
+    }
+
+    public String getCurrentPwd() {
+        return currentPwd;
+    }
+
+    public void setCurrentPwd(String currentPwd) {
+        this.currentPwd = currentPwd;
+    }
+
+    public String getNewPwd() {
+        return newPwd;
+    }
+
+    public void setNewPwd(String newPwd) {
+        this.newPwd = newPwd;
     }
 }

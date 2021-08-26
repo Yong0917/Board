@@ -26,6 +26,7 @@ public class RegisterService implements UserDetailsService {
     }
 
     public void joinUser(MemberVo memberVo) {
+        //패스워드 암호화
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         memberVo.setPassword(passwordEncoder.encode(memberVo.getPassword()));
         registerMapper.joinMember(memberVo);
@@ -38,7 +39,7 @@ public class RegisterService implements UserDetailsService {
         MemberVo user =  registerMapper.selectMember(username);
 
         if(user==null) {
-            // throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(username);
         }
         return user;
 

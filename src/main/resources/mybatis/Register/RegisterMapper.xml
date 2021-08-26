@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="yong.board.mapper.RegisterMapper">
+
+    <select id="checkMember" parameterType="MemberVo" resultType="MemberVo">
+        select * from user_list where id ='${id}'
+    </select>
+
+    <select id="joinMember" parameterType="MemberVo">
+        insert into user_list (id, password,username,age,auth,regDate,secretKey,qrCord)
+        values (#{id}, #{password},#{username}, #{age},#{auth},NOW(),#{secretKey},#{qrCord});
+    </select>
+
+    <select id="selectMember" resultType="MemberVo" parameterType="String">
+        SELECT * FROM user_list where id = #{id}
+    </select>
+
+    <select id="selectQrCord" resultType="String" parameterType="MemberVo">
+        SELECT qrCord FROM user_list
+        where id = #{id}
+    </select>
+
+
+    <select id="selectSecretKey"  parameterType="MemberVo" resultType="String">
+        SELECT secretkey FROM user_list
+        where id = #{id};
+    </select>
+
+
+</mapper>
+
+

@@ -11,22 +11,19 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class MainController {
 
-    @GetMapping("/main")
+    @GetMapping("/main")    //세션값 없으면 redirect
     public String main(Model model, HttpSession session) {
 
         String id = (String) session.getAttribute("id");
         MemberVo param =new MemberVo();
         param.setId(id);
 
-//        if(session.getAttribute("rscgrp")!=null || session.getAttribute("rscgrp")!="" ) model.addAttribute("grpList", homeService.getGrpList());
-
-
         if(session.getAttribute("id")==null) return "redirect:/";
         else return "main";
 
     }
 
-    @RequestMapping(value="/logout")
+    @RequestMapping(value="/logout")        //로그아웃 후 세션 제거
     public String logoutProcess(HttpSession session) {
 
         session.removeAttribute("loginCheck");
@@ -39,11 +36,4 @@ public class MainController {
         return "redirect:/";
     }
 
-    @GetMapping("/memberInfo")
-    public String memberInfo(Model model, HttpSession session) {
-
-        if(session.getAttribute("id")==null) return "redirect:/";
-        else return "main";
-
-    }
 }

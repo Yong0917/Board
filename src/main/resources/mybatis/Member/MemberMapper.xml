@@ -2,31 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="yong.board.mapper.RegisterMapper">
+<mapper namespace="yong.board.mapper.MemberMapper">
 
-    <select id="checkMember" parameterType="MemberVo" resultType="MemberVo">
-        select * from user_list where id ='${id}'
-    </select>
+    <select id="selectMemberList" resultType="MemberVo">
+        SELECT id, username,auth, substring(regDate,1,10) AS regDate, age
+        FROM user_list
 
-    <select id="joinMember" parameterType="MemberVo">
-        insert into user_list (id, password,username,age,auth,regDate,secretKey,qrCord)
-        values (#{id}, #{password},#{username}, #{age},#{auth},NOW(),#{secretKey},#{qrCord});
     </select>
 
     <select id="selectMember" resultType="MemberVo" parameterType="String">
-        SELECT * FROM user_list where id = #{id}
+        SELECT * FROM user_list
+        where id = #{userId}
     </select>
 
-    <select id="selectQrCord" resultType="String" parameterType="MemberVo">
-        SELECT qrCord FROM user_list
-        where id = #{id}
-    </select>
+    <update id="updatePw" parameterType="MemberVo">
+        update user_list SET password = #{password} where id = #{id};
+    </update>
 
+    <delete id="deleteMember" parameterType="MemberVo">
+        delete from user_list where id = #{id};
+    </delete>
 
-    <select id="selectSecretKey"  parameterType="MemberVo" resultType="String">
-        SELECT secretkey FROM user_list
-        where id = #{id};
-    </select>
+    <delete id="boardDelete" parameterType="MemberVo">
+        DELETE FROM list WHERE writer = #{id}
+    </delete>
+
+    <delete id="commentDelete" parameterType="MemberVo">
+        DELETE FROM comment WHERE writer = #{id}
+    </delete>
 
 </mapper>
 

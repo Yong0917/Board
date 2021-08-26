@@ -47,6 +47,8 @@ public class BoardController {
         return "detail";
     }
 
+
+    //게시글 작성
     @RequestMapping(value = "/insertProc")
     private String boardInsertProc(HttpServletRequest request,@RequestPart MultipartFile files) throws Exception{
 
@@ -101,6 +103,8 @@ public class BoardController {
 
     }
 
+
+    //게시글 불러오기
     @ResponseBody
     @RequestMapping(value = "/getBoardList.do")
     public List<BoardVO> getBoardList(Model model, BoardVO param)  {
@@ -124,7 +128,7 @@ public class BoardController {
 
 
 
-    @RequestMapping("/updateProc")
+    @RequestMapping("/updateProc")  //게시글 수정
     private String boardUpdateProc(HttpServletRequest request) throws Exception{
 
         BoardVO board = new BoardVO();
@@ -138,18 +142,18 @@ public class BoardController {
     }
 
 
-    @RequestMapping("/delete")
+    @RequestMapping("/delete")  //게시글 삭제
     private String boardDelete(BoardVO param, Model model) throws Exception{
         int bno = param.getBno();
 
-        boardService.boardDeleteService(bno);
-        boardService.fileDeleteService(bno);
-        boardService.commentDeleteService(bno);
+        boardService.boardDeleteService(bno);       //게시글 삭제
+        boardService.fileDeleteService(bno);        //파일 삭제
+        boardService.commentDeleteService(bno);     //댓글 삭제
 
         return "redirect:/main";
     }
 
-    @RequestMapping("/fileDown/{bno}")
+    @RequestMapping("/fileDown/{bno}") //파일 다운로드 로직
     private void fileDown(@PathVariable int bno, HttpServletRequest request, HttpServletResponse response) throws Exception{
 
         request.setCharacterEncoding("UTF-8");

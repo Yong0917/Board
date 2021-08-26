@@ -54,12 +54,7 @@
 
     <select id="selectBoardList" resultType="BoardVO" parameterType="BoardVO">
         SELECT bno,subject,substring(content,1,3) as content,writer,substring(regDate,1,16) as regDate FROM list
-        <!--<choose>
-            <when test="auth!='Admin'">
-                where writer = #{id}
-            </when>
-            <otherwise>  </otherwise>
-        </choose>-->
+
     </select>
 
     <insert id="FileInsert" parameterType="FileVO">

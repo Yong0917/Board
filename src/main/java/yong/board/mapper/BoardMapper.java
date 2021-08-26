@@ -28,14 +28,19 @@ public interface BoardMapper {
     //게시글 삭제
     void boardDelete(int bno) throws Exception;
 
+    //파일 삭제
     void fileDelete(int bno) throws Exception;
 
+    //댓글 삭제
     void commentDelete(int bno) throws Exception;
 
+    //게시판 리스트
     List<BoardVO> selectBoardList(BoardVO param);
 
+    //파일 경로 삽입
     public void FileInsert(FileVO fileVO) throws Exception;
 
+    //파일 경로 다운
     public FileVO fileDetail(int bno) throws Exception;
 
 }

@@ -10,13 +10,18 @@ import java.util.List;
 @Mapper
 public interface RegisterMapper {
 
+    //member 확인
     List<MemberVo> checkMember(MemberVo memberVo);
 
+    //회원 가입
     void joinMember(MemberVo memberVo);
 
+    // 멤버 선택
     MemberVo selectMember(String username);
 
+    //qrcord 불러오기
     String selectQrCord(MemberVo memberVo);
 
+    //sercretkey 불러오기
     String selectSecretKey(MemberVo memberVo);
 }
