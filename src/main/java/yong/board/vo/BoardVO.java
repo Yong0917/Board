@@ -12,6 +12,7 @@ public class BoardVO {
     private String auth;
     private String recparam;
     private String id;
+    private int reCnt;
 
 
     public String getSubject() {
@@ -88,5 +89,13 @@ public class BoardVO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getReCnt() {
+        return reCnt;
+    }
+
+    public void setReCnt(int reCnt) {
+        this.reCnt = reCnt;
     }
 }

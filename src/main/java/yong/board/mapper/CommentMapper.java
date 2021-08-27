@@ -25,4 +25,5 @@ public interface CommentMapper {
     //comment 삭제
     public int commentDelete(int cno) throws Exception;
 
+    int commentCnt(int bno);
 }

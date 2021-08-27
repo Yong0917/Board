@@ -73,4 +73,8 @@ public class BoardService {
     }
 
 
+    public int updateReviewCnt(int bno) throws Exception {
+        return boardmapper.updateReviewCnt(bno);
+    }
+
 }

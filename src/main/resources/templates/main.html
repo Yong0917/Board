@@ -46,20 +46,12 @@
                         {data: "writer"},
                         {data: "content"},
                         {data: "regDate" },
-                        {data: "bno",
-                            "render": function (data, type, row) {
-                                if (type == 'display') {
-                                    data = '<button class="mr-2 btn btn-primary btn-sm">detail</button>';
-                                }
-                                return data;
-                            }
-                        }
-
+                        {data: "reCnt"}
                     ],
-                    columnDefs: [{
-                        targets: [3,5],
+                    /*columnDefs: [{
+                        targets: [5,7],
                         visible: false
-                    }]
+                    }]*/
 
                 });
 
@@ -151,7 +143,7 @@
                                                 <th>작성자</th>
                                                 <th>내용</th>
                                                 <th>등록 날짜</th>
-                                                <th></th>
+                                                <th>조회수</th>
                                             </tr>
                                             </thead>
 

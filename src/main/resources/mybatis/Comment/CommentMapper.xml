@@ -9,7 +9,7 @@
     </select>
 
     <select id="commentList" resultType="CommentVO">
-        SELECT * FROM comment where BNO = #{bno}
+        SELECT * FROM comment where bno = #{bno}
     </select>
 
 
@@ -18,12 +18,17 @@
     </insert>
 
     <update id="commentUpdate" parameterType="CommentVO">
-        UPDATE comment SET content = #{content} WHERE CNO = #{cno}
+        UPDATE comment SET content = #{content} WHERE cno = #{cno}
     </update>
 
     <delete id="commentDelete" parameterType="int">
         DELETE FROM comment WHERE cno = #{cno}
     </delete>
+
+
+    <select id="commentCnt" parameterType="int" resultType="int">
+        SELECT count(*) FROM comment where bno = #{bno}
+    </select>
 
 </mapper>
 

@@ -43,4 +43,6 @@ public interface BoardMapper {
     //파일 경로 다운
     public FileVO fileDetail(int bno) throws Exception;
 
+    public int updateReviewCnt(int bno);
+
 }

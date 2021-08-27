@@ -58,5 +58,12 @@ public class CommentController {
         return commentService.commentDeleteService(cno);
     }
 
+    @RequestMapping("/commentCnt") //댓글 삭제
+    @ResponseBody
+    private int commentCnt(int bno) throws Exception{
+
+        return commentService.commentCnt(bno);
+    }
+
 }
 

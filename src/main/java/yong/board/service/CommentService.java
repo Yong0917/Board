@@ -38,6 +38,13 @@ public class CommentService {
 
         return commentMapper.commentDelete(cno);
     }
+
+    public int commentCnt(int bno) {
+        if(commentMapper.commentCnt(bno) == 0)
+            return 0;
+        else
+            return commentMapper.commentCnt(bno);
+    }
 }
 
 

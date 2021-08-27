@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import yong.board.service.BoardService;
 import yong.board.vo.BoardVO;
+import yong.board.vo.CommentVO;
 import yong.board.vo.FileVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +44,8 @@ public class BoardController {
         model.addAttribute("DETAIL", boardService.boardDetailService(bno));
         model.addAttribute("files", boardService.fileDetailService(bno));
 
+        //조회수
+        boardService.updateReviewCnt(bno);
 
         return "detail";
     }
