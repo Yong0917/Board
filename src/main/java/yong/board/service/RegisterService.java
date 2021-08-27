@@ -39,7 +39,7 @@ public class RegisterService implements UserDetailsService {
         MemberVo user =  registerMapper.selectMember(username);
 
         if(user==null) {
-            throw new UsernameNotFoundException(username);
+            //throw new UsernameNotFoundException(username);
         }
         return user;
 
