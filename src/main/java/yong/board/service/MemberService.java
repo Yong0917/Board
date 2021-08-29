@@ -5,7 +5,16 @@ import org.springframework.stereotype.Service;
 import yong.board.mapper.MemberMapper;
 import yong.board.vo.MemberVo;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class MemberService {
@@ -53,6 +62,42 @@ public class MemberService {
         mapper.deleteMember(memberVo);      //user_list id삭제
         mapper.boardDelete(memberVo);       // 작성했던 게시글 삭제
         mapper.commentDelete(memberVo);     // 작성했던 comment 삭제
+
+    }
+
+    public List<MemberVo> selectCommentList(String id) {
+        return mapper.selectCommentList(id);
+    }
+
+    public String pwSchedule(String id) {
+
+        String pwChange = "";
+
+        try {
+
+            String userPwDate = mapper.pwSchedule(id);  //user pw 업데이트 시간
+
+            String formatDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")); //현재시간
+
+            SimpleDateFormat fDate = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.KOREA);
+
+            Date userDate = fDate.parse(userPwDate);
+            Date currentDate = fDate.parse(formatDate);
+
+            long userDate2 = userDate.getTime();
+            long currentDate2 = currentDate.getTime();
+
+            long userPwHours = TimeUnit.MILLISECONDS.toHours(userDate2);        //마지막 패스워드 수정날짜를 시간단위로
+            long currentHours = TimeUnit.MILLISECONDS.toHours(currentDate2);
+
+            if((currentHours - userPwHours) >= 720) pwChange = "Change";        // 30일 -> 720hours
+            else pwChange = "noChange";
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return pwChange;
 
     }
 }

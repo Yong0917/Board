@@ -14,11 +14,11 @@
         sessionAuth = document.getElementById("auth").innerText;
         sessionId = document.getElementById("id").innerText;
 
-        getResourceList();
-
+        getBoardList();
+        pwSchedule();
     }
 
-    function getResourceList() {
+    function getBoardList() {
         $.ajax({
             url: "/getBoardList.do",
             type: "GET",
@@ -84,6 +84,28 @@
 
 
 
+
+
+            }, error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+
+    }
+
+    function pwSchedule(){
+        $.ajax({
+            url: "/pwSchedule.do",
+            type: "GET",
+            data: {
+                id: sessionId
+            },
+            success: function (data) {
+
+                if(data == "Change"){
+                    alert("최근 30일동안 비밀번호를 변경하지 않았습니다.\n안전한 사용을 위해 비밀번호를 변경해주시기 바랍니다.");
+                    location.href = "/member";
+                }
 
 
             }, error: function (request, status, error) {

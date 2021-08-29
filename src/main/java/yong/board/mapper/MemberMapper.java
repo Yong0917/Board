@@ -27,4 +27,8 @@ public interface MemberMapper {
 
     //comment 삭제
     void commentDelete(MemberVo memberVo);
+
+    List<MemberVo> selectCommentList(String id);
+
+    String pwSchedule(String id);
 }

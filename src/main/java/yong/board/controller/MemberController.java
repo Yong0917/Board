@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import yong.board.service.MemberService;
+import yong.board.vo.BoardVO;
 import yong.board.vo.MemberVo;
 
 import javax.servlet.http.HttpSession;
@@ -62,6 +63,32 @@ public class MemberController {
         memberService.deleteUser(memberVo);
 
         return "redirect:/member";
+    }
+
+
+    @ResponseBody  //사용자 댓글 리스트
+    @RequestMapping(value = "/getCommentList.do")
+    public List<MemberVo> getMemberList(Model model, MemberVo memberVo)  {
+
+        String id = memberVo.getId();
+
+        List<MemberVo> list = memberService.selectCommentList(id);
+        model.addAttribute("list",list);
+
+        return list;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/pwSchedule.do")
+    private String pwSchedule(MemberVo memberVo) {
+
+        String id = memberVo.getId();
+
+        String scheduleCheck = memberService.pwSchedule(id);
+
+
+        return scheduleCheck;   //return Change || noChange
+
     }
 
 }

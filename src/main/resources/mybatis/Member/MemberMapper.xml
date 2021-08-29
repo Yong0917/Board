@@ -16,7 +16,7 @@
     </select>
 
     <update id="updatePw" parameterType="MemberVo">
-        update user_list SET password = #{password} where id = #{id};
+        update user_list SET password = #{password},regDate = NOW() where id = #{id};
     </update>
 
     <delete id="deleteMember" parameterType="MemberVo">
@@ -30,6 +30,15 @@
     <delete id="commentDelete" parameterType="MemberVo">
         DELETE FROM comment WHERE writer = #{id}
     </delete>
+
+    <select id="selectCommentList" parameterType="String" resultType="MemberVo">
+        select a.bno as bno, a.subject as subject, a.writer as writer, substring(b.content,1,5) as content,
+               substring(b.regDate,1,16) as regDate from list a, comment b where a.bno = b.bno and b.writer = #{id};
+    </select>
+
+    <select id="pwSchedule" parameterType="String" resultType="String">
+        select regDate from user_list where id = #{id};
+    </select>
 
 </mapper>
 

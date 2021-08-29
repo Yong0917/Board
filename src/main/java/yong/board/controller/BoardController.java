@@ -114,7 +114,6 @@ public class BoardController {
 
 
         List<BoardVO> list = boardService.selectBoardList(param);
-
         model.addAttribute("list",list);
 
         return list;

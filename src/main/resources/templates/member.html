@@ -8,10 +8,14 @@
     let userId =  "";
 
     window.onload = function () {
+
+        sessionId = document.getElementById("id").innerText;
+
         userId = $('#id').text();
 
         getMemberList(); // 사용자관리
-        getUserInfo();  //회원정보
+        getUserInfo();  //사용자정보
+        getCommentList(); //사용자별 댓글 리스트
 
         clearPwdUpdateModal();      //수정완료 후 clear
 
@@ -19,14 +23,13 @@
 
     }
 
-    let buttonclicked;
-
     function getMemberList() {
 
         $.ajax({
             url: "/getMemberList.do",
             type: "GET",
             success: function (data) {
+                console.log(data);
                 tablelength = data.length;
                 var table = $('#userTable').dataTable({
                     aaData: data,
@@ -78,6 +81,47 @@
                 });
 
 
+
+
+            }, error: function (request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+
+    }
+
+    function getCommentList() {
+
+        $.ajax({
+            url: "/getCommentList.do",
+            type: "GET",
+            data: {
+                id: sessionId
+            },
+            success: function (data) {
+                console.log(data);
+                tablelength = data.length;
+                var table = $('#commentTable').dataTable({
+                    aaData: data,
+
+                    bPaginate: false,
+                    bLengthChange: true,
+                    bInfo: false,
+                    bAutoWidth: false,
+                    processing: true,
+                    ordering: true,
+                    serverSide: false,
+                    searching: false,
+
+                    columns: [
+                        {data: "bno"},
+                        {data: "subject"},
+                        {data: "writer"},
+                        {data: "content"},
+                        {data: "regDate"}
+                    ],
+
+                });
 
 
             }, error: function (request, status, error) {
@@ -351,6 +395,60 @@
                                                 <th>등록일</th>
                                                 <th></th>
 
+                                            </tr>
+                                            </thead>
+
+                                            <tbody style="text-align: center">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="container-fluid"  th:if="${session['auth']} =='User'">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">작성한 댓글</h1>
+
+                </div>
+
+                <div class="row">
+
+                    <!-- Area Chart -->
+                    <div class="col-xl-12 col-lg-10">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+
+                            <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between" style="color:white;">
+                                <h6 class="m-0 font-weight-bold text-primary">댓글 리스트</h6>
+
+
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body" style="height: 450px">
+                                <div class="card shadow h-100 py-2">
+                                    <div class="table-responsive" style="overflow:auto; height: 100%">
+                                        <table class="table table-bordered" id="commentTable" cellspacing="0">
+                                            <thead style="text-align: center; position: sticky; top: 0px; background: white; ">
+                                            <tr>
+
+                                                <th>No</th>
+                                                <th>게시글 제목</th>
+                                                <th>게시글 작성자</th>
+                                                <th>댓글 내용</th>
+                                                <th>댓글 등록 날짜</th>
                                             </tr>
                                             </thead>
 
