@@ -53,8 +53,8 @@
     </delete>
 
     <select id="selectBoardList" resultType="BoardVO" parameterType="BoardVO">
-        SELECT bno,subject,substring(content,1,3) as content,writer,substring(regDate,1,16) as regDate, reCnt FROM list
-
+        SELECT bno,substring(subject,1,10) as subject, substring(content,1,3) as content,
+               writer,substring(regDate,1,16) as regDate, reCnt ,(SELECT count(*) FROM board.recommend b where bno = a.bno) as luCount FROM board.list a
     </select>
 
     <insert id="FileInsert" parameterType="FileVO">

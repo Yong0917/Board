@@ -123,6 +123,30 @@
 
                 });
 
+                var table = $('#commentTable').DataTable();
+
+                $('#commentTable tbody').on('click', 'tr', function () {
+                    var tr = $(this).closest('tr');
+                    var dt = table.row(tr).data();
+
+                    location.href='/detail?bno=' + dt.bno;
+
+                });
+
+                $('#commentTable tbody').on('mouseenter', 'tr', function () {
+
+                    $(this).closest('tr').css('color','blue');
+                    $(this).closest('tr').css('cursor','pointer');
+
+
+                });
+
+                $('#commentTable tbody').on('mouseleave', 'tr', function () {
+
+                    $(this).closest('tr').css('color','black');
+
+                });
+
 
             }, error: function (request, status, error) {
                 console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -444,7 +468,7 @@
                                             <thead style="text-align: center; position: sticky; top: 0px; background: white; ">
                                             <tr>
 
-                                                <th>No</th>
+                                                <th>게시글 번호</th>
                                                 <th>게시글 제목</th>
                                                 <th>게시글 작성자</th>
                                                 <th>댓글 내용</th>

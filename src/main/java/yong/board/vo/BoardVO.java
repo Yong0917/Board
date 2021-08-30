@@ -13,6 +13,7 @@ public class BoardVO {
     private String recparam;
     private String id;
     private int reCnt;
+    private String luCount;
 
 
     public String getSubject() {
@@ -97,5 +98,13 @@ public class BoardVO {
 
     public void setReCnt(int reCnt) {
         this.reCnt = reCnt;
+    }
+
+    public String getLuCount() {
+        return luCount;
+    }
+
+    public void setLuCount(String luCount) {
+        this.luCount = luCount;
     }
 }
