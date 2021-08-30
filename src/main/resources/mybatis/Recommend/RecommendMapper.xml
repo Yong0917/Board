@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="yong.board.mapper.RecoMapper">
+
+    <select id="checkRecommend" parameterType="RecoVO" resultType="RecoVO">
+        select * from recommend where id ='${id}' and bno = '${bno}';
+    </select>
+
+    <select id="insertRecommend" parameterType="RecoVO">
+        insert into recommend (bno,id, regDate)
+        values ('${bno}', '${id}',NOW());
+    </select>
+
+    <select id="deleteRecommend" parameterType="RecoVO">
+        delete from recommend where id ='${id}' and bno = '${bno}';
+    </select>
+
+    <select id="recommendCnt" parameterType="int" resultType="int">
+        SELECT count(*) FROM recommend where bno = #{bno};
+    </select>
+
+
+
+
+</mapper>
+
+
