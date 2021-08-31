@@ -48,13 +48,13 @@
         DELETE FROM files WHERE bno = #{bno}
     </delete>
 
-    <delete id="commentDelete" parameterType="int">
+    <delete id="Delete" parameterType="int">
         DELETE FROM comment WHERE bno = #{bno}
     </delete>
 
     <select id="selectBoardList" resultType="BoardVO" parameterType="BoardVO">
         SELECT bno,substring(subject,1,10) as subject, substring(content,1,3) as content,
-               writer,substring(regDate,1,16) as regDate, reCnt ,(SELECT count(*) FROM board.recommend b where bno = a.bno) as luCount FROM board.list a
+               writer,substring(regDate,1,16) as regDate, reCnt ,(SELECT count(*) FROM recommend b where bno = a.bno) as luCount FROM list a
     </select>
 
     <insert id="FileInsert" parameterType="FileVO">
@@ -72,6 +72,12 @@
     <update id="updateReviewCnt" parameterType="int">
         update list set reCnt = reCnt + 1 where bno = #{bno}
     </update>
+
+    <select id="selectRscList" resultType="BoardVO">
+        SELECT a.bno,substring(a.subject,1,10) as subject, substring(a.content,1,3) as content,
+               a.writer,substring(b.regDate,1,16) as regDate, a.reCnt
+        FROM list a, (select * from recommend where id = #{id}) b where a.bno = b.bno;
+    </select>
 
 
 </mapper>

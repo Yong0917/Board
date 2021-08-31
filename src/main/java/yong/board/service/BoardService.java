@@ -77,4 +77,7 @@ public class BoardService {
         return boardmapper.updateReviewCnt(bno);
     }
 
+    public List<BoardVO> selectRecList(BoardVO param) {
+        return boardmapper.selectRscList(param);
+    }
 }

@@ -45,4 +45,5 @@ public interface BoardMapper {
 
     public int updateReviewCnt(int bno);
 
+    List<BoardVO> selectRscList(BoardVO param);
 }

@@ -5,10 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import yong.board.service.BoardService;
 import yong.board.vo.BoardVO;
@@ -17,6 +14,7 @@ import yong.board.vo.FileVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.List;
 
@@ -36,7 +34,14 @@ public class BoardController {
         return "insert";
     }
 
-    //@ResponseBody
+    @GetMapping("/record")  //세션값 없으면 redirect
+    public String record(Model model, HttpSession session) {
+
+        if(session.getAttribute("id")==null) return "redirect:/";
+        else return "record";
+
+    }
+
     @RequestMapping("/detail") //게시글 작성폼 호출
     private String detail(BoardVO param , Model model) throws Exception{
         int bno = param.getBno();
@@ -117,6 +122,20 @@ public class BoardController {
         model.addAttribute("list",list);
 
         return list;
+    }
+
+
+    //추천누른 게시글 가져오기
+    @ResponseBody
+    @RequestMapping(value = "/getRecList.do")
+    public List<BoardVO> getRecList(Model model, BoardVO param) {
+
+
+        List<BoardVO> list = boardService.selectRecList(param);
+        model.addAttribute("list", list);
+
+        return list;
+
     }
 
     @RequestMapping("/update") //게시글 수정폼 호출
