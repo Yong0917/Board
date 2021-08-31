@@ -62,6 +62,7 @@ public class MemberService {
         mapper.deleteMember(memberVo);      //user_list id삭제
         mapper.boardDelete(memberVo);       // 작성했던 게시글 삭제
         mapper.commentDelete(memberVo);     // 작성했던 comment 삭제
+        mapper.recommendDelete(memberVo);     // 작성했던 추천 삭제
 
     }
 

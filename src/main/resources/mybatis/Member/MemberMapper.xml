@@ -31,6 +31,10 @@
         DELETE FROM comment WHERE writer = #{id}
     </delete>
 
+    <delete id="recommendtDelete" parameterType="MemberVo">
+        DELETE FROM recommend WHERE id = #{id}
+    </delete>
+
     <select id="selectCommentList" parameterType="String" resultType="MemberVo">
         select a.bno as bno, a.subject as subject, a.writer as writer, substring(b.content,1,5) as content,
                substring(b.regDate,1,16) as regDate from list a, comment b where a.bno = b.bno and b.writer = #{id};

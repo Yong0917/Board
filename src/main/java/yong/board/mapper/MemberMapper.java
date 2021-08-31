@@ -31,4 +31,6 @@ public interface MemberMapper {
     List<MemberVo> selectCommentList(String id);
 
     String pwSchedule(String id);
+
+    void recommendDelete(MemberVo memberVo);
 }
