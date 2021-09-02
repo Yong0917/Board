@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import yong.board.service.BoardService;
 import yong.board.vo.BoardVO;
-import yong.board.vo.CommentVO;
 import yong.board.vo.FileVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +33,12 @@ public class BoardController {
         return "insert";
     }
 
+    @GetMapping("/movie")
+    public String movie(Model model, HttpSession session){
+
+        return "movie";
+    }
+
     @GetMapping("/record")  //세션값 없으면 redirect
     public String record(Model model, HttpSession session) {
 
@@ -54,6 +59,7 @@ public class BoardController {
 
         return "detail";
     }
+
 
 
     //게시글 작성
