@@ -35,7 +35,7 @@
                     keyword: keyword1
                 },
                 success: function (data) {
-                    getBoardList(data);
+                    getMovieList(data);
 
                 }, error: function (request, status, error) {
                     console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -45,9 +45,9 @@
     }
 
 
-    function getBoardList(data) {
+    function getMovieList(data) {
 
-        var table = $('#bookTable').dataTable({
+        var table = $('#movieTable').dataTable({
             aaData: data,
             dom : 'Bfrtip',
             pageLength: 12,
@@ -125,7 +125,7 @@
                                     <span id="auth" th:text="${session['auth']}" hidden="true"> </span>
                                     <span id="id" th:text="${session['id']}" hidden="true"> </span>
                                     <div class="table-responsive" style="overflow:auto; ">
-                                        <table class="table table-bordered" id="bookTable" cellspacing="0">
+                                        <table class="table table-bordered" id="movieTable" cellspacing="0">
                                             <thead style="text-align: center; position: sticky; top: 0px; ">
                                             <tr>
                                                 <th>영화 제목</th>

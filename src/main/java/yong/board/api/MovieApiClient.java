@@ -22,7 +22,7 @@ public class MovieApiClient {
     private final RestTemplate restTemplate;
     private final String CLIENT_ID = "CWKP9jGZMGx7VvBz3I3e";
     private final String CLIENT_SECRET = "z4X4Ld4Yn9";
-    private final String OpenNaverMovieUrl_getMovies = "https://openapi.naver.com/v1/search/movie.json?query={keyword}";
+    private final String OpenNaverMovieUrl_getMovies = "https://openapi.naver.com/v1/search/movie.json?query={keyword}&display=100";
 
     public List<MovieVO> requestMovie(String keyword) {
         final HttpHeaders headers = new HttpHeaders(); // 헤더에 key들을 담아준다.

@@ -36,7 +36,14 @@ public class BoardController {
     @GetMapping("/movie")
     public String movie(Model model, HttpSession session){
 
-        return "movie";
+        if(session.getAttribute("id")==null) return "redirect:/";
+        else return "movie";
+    }
+
+    @GetMapping("/location")
+    public String location(Model model, HttpSession session){
+
+        return "location";
     }
 
     @GetMapping("/record")  //세션값 없으면 redirect
