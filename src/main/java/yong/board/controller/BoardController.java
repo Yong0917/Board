@@ -43,7 +43,8 @@ public class BoardController {
     @GetMapping("/location")
     public String location(Model model, HttpSession session){
 
-        return "location";
+        if(session.getAttribute("id")==null) return "redirect:/";
+        else return "location";
     }
 
     @GetMapping("/record")  //세션값 없으면 redirect
