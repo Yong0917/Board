@@ -73,7 +73,7 @@
 ![Movie_research](https://user-images.githubusercontent.com/65889807/132849866-928a7ff1-7c87-44f5-a927-5a415afaeefb.png)
 
  ----------- 
- **8. 지역 검색**
+**8. 지역 검색**
     * 네이버 지역 검색 API 기능 사용
     * Category, 이름, 링크, 도로명 주소 제공(최대 5개)
     * Excel 버튼을 이용해 다운로드 가능
@@ -82,14 +82,14 @@
 ![Location_research](https://user-images.githubusercontent.com/65889807/132850327-d46efa4c-6e99-427e-bf50-c7287d2c4a9e.png)
 
 ----------- 
- **9. 기록**
+**9. 기록**
     * 자유 게시판에서 추천 누른 게시글 리스트 출력
     * 추천누른 시간 제공
   
 ![Recommend](https://user-images.githubusercontent.com/65889807/132850435-84a78bd0-1306-431b-ab82-6437993fdbd4.png)
 
 ----------- 
- ** 10.회원 정보(권한: User) **
+**11. 회원 정보(권한: User)**
    * 사용자 정보(아이디, 이름, 나이, 권한, 등록일, 비밀번호)
    * 비밀번호 변경 기능(현재 비밀번호, 새 비밀번호, 새 비밀번호 확인)
    * 회원 탈퇴 기능
