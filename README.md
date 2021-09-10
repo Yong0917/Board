@@ -4,6 +4,7 @@
 **개요**
 * Spring Boot를 이용한 통합 게시판 커뮤니티
 ----------- 
+
 **주요 기능**
 * 회원 가입
 * 자유 게시판
@@ -109,7 +110,8 @@
 -----------
 **기술 스택**
 * Spring Boot
-* Spring JPA, Spring JDBC
+* Spring JPA
+* Spring JDBC
 * Spring Security
 * thymleaf
 * Mybatis
@@ -117,7 +119,12 @@
 * AJax
 * Bootstrap
 * Gradle
+* Google OTP API
+* NAVER API
 
 -----------
+**프로젝트 정보**
+* 신승용 - (ssyong917@naver.com)
+* 프로젝트 소요 시간 - 40시간
 
-
+----------- 
