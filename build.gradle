@@ -43,6 +43,9 @@ dependencies {
     compileOnly 'org.apache.commons:commons-lang3:3.0'
     compileOnly 'com.google.code.gson:gson:2.8.2'    //gson 파싱
     implementation 'com.googlecode.json-simple:json-simple:1.1'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+
 }
 
 test {

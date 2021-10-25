@@ -92,7 +92,6 @@ public class RegisterController {
 
                 //검증 성공
                 session.setAttribute("loginCheck", true);
-
                 return "Success";
             }
 

@@ -16,6 +16,8 @@
                 password: document.getElementById('password').value
             },
             success: function (data) {
+                console.log("Wfewef");
+                console.log(data);
 
                 if(data == "idNull")
                     window.alert("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")
@@ -40,7 +42,6 @@
 
 
     function getImage() {
-
         $.ajax({
             url: "/getImage.do",
             type: "GET",
@@ -129,7 +130,7 @@
                                 </button>
 
                                 <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
-
+                                <a href="/oauth2/authorization/google" class="btn btn-sm btn-success active" role="button">Google Login</a>
                                 <a class="float-right mr-1" href="/userjoin" style="cursor: pointer" >회원 가입</a>
 
 
