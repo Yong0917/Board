@@ -180,9 +180,9 @@
 
         $.ajax({
             url: "/getUserInfo",
-            type: "POST",
+            type: "GET",
             data: {
-                id: userId
+                id: sessionId
             },
             success: function (data) {
                 if(data == '') {

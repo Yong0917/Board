@@ -44,7 +44,7 @@ public class MemberController {
     }
 
     @ResponseBody   //사용자 정보
-    @RequestMapping(value = "/getUserInfo")
+    @GetMapping(value = "/getUserInfo")
     public MemberVo getUserInfo(MemberVo memberVo) {
         return memberService.getUserInfo(memberVo.getId());
     }
@@ -78,6 +78,7 @@ public class MemberController {
         return list;
     }
 
+    //비밀번호 업데이트(주기별)
     @ResponseBody
     @GetMapping(value = "/pwSchedule.do")
     private String pwSchedule(MemberVo memberVo) {

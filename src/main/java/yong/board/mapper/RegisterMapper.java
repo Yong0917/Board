@@ -24,4 +24,10 @@ public interface RegisterMapper {
 
     //sercretkey 불러오기
     String selectSecretKey(MemberVo memberVo);
+
+    //SSO로그인 정보
+    void registerSSO(MemberVo memberVo);
+
+    //SSO 확인
+    List<MemberVo> checkSSO(MemberVo member);
 }

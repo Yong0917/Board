@@ -28,8 +28,12 @@ public class RegisterService implements UserDetailsService {
     public void joinUser(MemberVo memberVo) {
         //패스워드 암호화
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        memberVo.setPassword(passwordEncoder.encode(memberVo.getPassword()));
-        registerMapper.joinMember(memberVo);
+        if(memberVo.getPassword() == null)      //SSO는 패스워드 필요X
+            registerMapper.registerSSO(memberVo);       //SSO전용
+        else{
+            memberVo.setPassword(passwordEncoder.encode(memberVo.getPassword()));
+            registerMapper.joinMember(memberVo);
+        }
 
     }
 
@@ -56,5 +60,10 @@ public class RegisterService implements UserDetailsService {
 
     public MemberVo selectMember(String id) {
         return registerMapper.selectMember(id);
+    }
+
+    //SSO 전적 확인
+    public List<MemberVo> checkSSO(MemberVo member) {
+        return registerMapper.checkSSO(member);
     }
 }

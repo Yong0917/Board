@@ -28,12 +28,6 @@ public class RegisterController {
         this.registerService = registerService;
     }
 
-    @GetMapping("/") //root 로그인화면
-    public String login(Model model) {
-
-        return "Login";
-    }
-
     @GetMapping("/userjoin")    //회원가입
     public String newUser(Model model) {
 

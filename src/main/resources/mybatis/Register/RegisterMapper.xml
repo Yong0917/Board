@@ -28,6 +28,16 @@
         where id = #{id};
     </select>
 
+    <select id="registerSSO" parameterType="MemberVo">
+        insert into user_list (id,username,regDate,auth)
+        values (#{id},#{username}, NOW(),#{auth});
+    </select>
+
+    <select id="checkSSO" parameterType="MemberVo" resultType="MemberVo">
+        select * from user_list where id = #{id};
+    </select>
+
+
 
 </mapper>
 

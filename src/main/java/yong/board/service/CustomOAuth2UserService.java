@@ -9,19 +9,21 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import yong.board.repository.UserRepository;
 import yong.board.user.OAuthAttributes;
 import yong.board.user.SessionUser;
 import yong.board.user.User;
+import yong.board.vo.MemberVo;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-    private final UserRepository userRepository;
+
     private final HttpSession httpSession;
+    private final RegisterService registerService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -36,18 +38,35 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // OAuth2UserService
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         User user = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(user)); // SessionUser (직렬화된 dto 클래스 사용)
+        httpSession.setAttribute("user", new SessionUser(user)); // SessionUser을 이용해 session 저장
 
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")),
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("USER")), //ROLE 기본값 USER로 설정
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
 
     // 유저 생성 및 수정 서비스 로직
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
-                .orElse(attributes.toEntity());
-        return userRepository.save(user);
+//        User user = userRepository.findByEmail(attributes.getEmail())
+//                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
+//                .orElse(attributes.toEntity());
+        User user = new User(attributes.getEmail(),attributes.getName(),attributes.getPicture());
+
+        MemberVo member = new MemberVo();
+        member.setId(attributes.getEmail());
+        member.setUsername(attributes.getName());
+        member.setAuth("User");
+
+        //SSO전용 DB등록
+        List<MemberVo> list =registerService.checkSSO(member);
+
+        if(list.size() == 0) {
+            registerService.joinUser(member);       //SSO정보 등록
+            return user;
+        }
+        else        //이미 존재할시 return
+            return user;
+
+//        return userRepository.save(user);
     }
 }
