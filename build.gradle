@@ -37,8 +37,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
-//    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//    testImplementation 'org.springframework.security:spring-security-test'
     runtimeOnly 'com.h2database:h2'
     compileOnly 'org.apache.commons:commons-lang3:3.0'
     compileOnly 'com.google.code.gson:gson:2.8.2'    //gson 파싱
