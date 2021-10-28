@@ -11,6 +11,7 @@
 * 영화 검색
 * 지역 검색
 * 회원 정보 수정
+* 로그인 SSO 구현(구글, 카카오, 네이버)
 
 ----------- 
 **주요 기술**
@@ -21,12 +22,24 @@
 * 세션 처리 및 권한 별 기능 구분
 * 게시판 작성, 수정, 파일 업로드 기능 
 * 관리자 기능 구현
-
+* Spring oAuth2를 이용한 SSO 기능 구현
 -----------
 **프로젝트 화면**
 1. 로그인 화면
+<p align="center"><img src="https://user-images.githubusercontent.com/65889807/139256132-762cd76d-8d8c-4b3f-9ce9-7580334dc6d2.png">
 
-![login](https://user-images.githubusercontent.com/65889807/132848253-0b0146cb-9a73-470f-b001-a4b80c30f767.png)
+ -----------
+ 
+**1-1) Google SSO, Naver SSO, Kakao SSO**
+ * Spring oAuth 적용
+ * 계정 정보를 받으면 DB에 저장(이미 SSO정보가 DB에 있을시 redirect)
+ * SSO 로그인 성공 시 Session 저장 및 main화면으로 redirect
+
+<p align="left">
+ <img src="https://user-images.githubusercontent.com/65889807/139256350-2ece58ab-1995-42ea-8c27-b0e02aabbe7c.png" width="450" height="622">
+ <img src="https://user-images.githubusercontent.com/65889807/139257329-a76399cb-4158-4e68-8f28-1ab9d89a08e7.png" width="500" height="900">
+ <img src="https://user-images.githubusercontent.com/65889807/139257961-f4b4d722-cdcb-43c1-97ba-db78e3b36550.png" width="524" height="860">
+</p>
 
 ----------- 
 **2. 회원가입 화면**
@@ -38,7 +51,9 @@
  
  ----------- 
 **3. Google OTP 화면 구현**             
-
+* Google OTP 앱을 다운받아 생성된 계정으로 6자리 코드입력(BoardCommunity: (admin))
+* 30초마다 6자리 코드 새로고침
+* 코드 입력후 일치하면 메인 화면으로 
 ![Google_OTP](https://user-images.githubusercontent.com/65889807/132848703-c5d00a44-09ee-44fa-8eca-0967bfcff5d2.png)
 
 ----------- 
@@ -85,8 +100,8 @@
 **9. 기록**
   * 자유 게시판에서 추천 누른 게시글 리스트 출력
   * 추천누른 시간 제공
-  
-![Recommend](https://user-images.githubusercontent.com/65889807/132850435-84a78bd0-1306-431b-ab82-6437993fdbd4.png)
+ 
+  ![record](https://user-images.githubusercontent.com/65889807/139260252-c0f461e6-137b-470d-bf25-4a766dc43114.png)
 
 ----------- 
 **10. 회원 정보(권한: User)**
@@ -121,10 +136,11 @@
 * Gradle
 * Google OTP API
 * NAVER API
+* SSO
+* Sring oAuth2
 
 -----------
 **프로젝트 정보**
 * 신승용 - (ssyong917@naver.com)
-* 프로젝트 소요 시간 - 40시간
 
 ----------- 
