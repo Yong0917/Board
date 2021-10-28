@@ -28,8 +28,10 @@ public interface MemberMapper {
     //comment 삭제
     void commentDelete(MemberVo memberVo);
 
+    //사용자별 게시글 리스트
     List<MemberVo> selectCommentList(String id);
 
+    //비밀번호 체크
     String pwSchedule(String id);
 
     void recommendDelete(MemberVo memberVo);
