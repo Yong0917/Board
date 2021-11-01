@@ -2,21 +2,28 @@ package yong.board.controller;
 
 import org.apache.commons.codec.binary.Base32;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import yong.board.TOTPTokenValidation;
 import yong.board.service.RegisterService;
 import yong.board.vo.MemberVo;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class RegisterController {
@@ -27,6 +34,9 @@ public class RegisterController {
     public RegisterController(RegisterService registerService) {
         this.registerService = registerService;
     }
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     @GetMapping("/userjoin")    //회원가입
     public String newUser(Model model) {
@@ -122,6 +132,32 @@ public class RegisterController {
         else {
             return "fail";
         }
+    }
+
+
+    //email Code 전송
+    @ResponseBody
+    @RequestMapping(value = "/emailCode", method = RequestMethod.GET)
+    public void emailCode(MemberVo memberVo){
+        Random random = new Random();
+        int checkNum = random.nextInt(888888) + 111111;
+
+        String toMail = memberVo.getEmail();
+        String title = "회원가입 인증 이메일 입니다.";
+        String content =
+                "홈페이지를 방문해주셔서 감사합니다." +
+                        "<br><br>" +
+                        "인증 번호는 " + checkNum + "입니다." +
+                        "<br>" +
+                        "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(toMail);
+        simpleMailMessage.setSubject(title);
+        simpleMailMessage.setText(content);
+
+        mailSender.send(simpleMailMessage);
+
     }
 
 
