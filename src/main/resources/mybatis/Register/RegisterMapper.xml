@@ -9,8 +9,8 @@
     </select>
 
     <select id="joinMember" parameterType="MemberVo">
-        insert into user_list (id, password,username,age,auth,regDate,secretKey,qrCord)
-        values (#{id}, #{password},#{username}, #{age},#{auth},NOW(),#{secretKey},#{qrCord});
+        insert into user_list (id, password,username,age,auth,regDate,secretKey,qrCord,email)
+        values (#{id}, #{password},#{username}, #{age},#{auth},NOW(),#{secretKey},#{qrCord},#{email});
     </select>
 
     <select id="selectMember" resultType="MemberVo" parameterType="String">
