@@ -34,7 +34,7 @@ public class MemberController {
     }
 
     @ResponseBody   //사용자 리스트
-    @RequestMapping(value = "/getMemberList.do")
+    @GetMapping(value = "/getMemberList.do")
     public List<MemberVo> getMemberList(Model model) {
 
         List<MemberVo>  list = memberService.selectMemberList();
@@ -51,7 +51,7 @@ public class MemberController {
 
 
     @ResponseBody   //비밀번호 수정
-    @RequestMapping(value = "/modifyUserPwd")
+    @PostMapping(value = "/modifyUserPwd")
     public String modifyUserPwd(MemberVo memberVo) {
         return memberService.modifyUserPwd(memberVo);
     }
@@ -67,7 +67,7 @@ public class MemberController {
 
 
     @ResponseBody  //사용자 댓글 리스트
-    @RequestMapping(value = "/getCommentList.do")
+    @GetMapping(value = "/getCommentList.do")
     public List<MemberVo> getMemberList(Model model, MemberVo memberVo)  {
 
         String id = memberVo.getId();

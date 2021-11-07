@@ -2,6 +2,8 @@ package yong.board.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import yong.board.service.RecoService;
@@ -22,7 +24,7 @@ public class RecoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/clickRecommend")
+    @PostMapping(value = "/clickRecommend")
     public String clickRecommend(RecoVO recoVO) throws Exception{
 
         List<RecoVO> list =recoService.checkRecommend(recoVO);  //이미 게시글 추천했는지 체크
@@ -45,8 +47,8 @@ public class RecoController {
 
     }
 
-    @RequestMapping("/recommendCnt") //댓글 갯수
     @ResponseBody
+    @GetMapping("/recommendCnt") //댓글 갯수
     private int recommendCnt(int bno) throws Exception{
 
         return recoService.recommendCnt(bno);

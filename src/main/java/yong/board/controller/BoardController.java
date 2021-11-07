@@ -128,7 +128,7 @@ public class BoardController {
 
     //게시글 불러오기
     @ResponseBody
-    @RequestMapping(value = "/getBoardList.do")
+    @GetMapping(value = "/getBoardList.do")
     public List<BoardVO> getBoardList(Model model, BoardVO param)  {
 
 
@@ -141,7 +141,7 @@ public class BoardController {
 
     //추천누른 게시글 가져오기
     @ResponseBody
-    @RequestMapping(value = "/getRecList.do")
+    @GetMapping(value = "/getRecList.do")
     public List<BoardVO> getRecList(Model model, BoardVO param) {
 
 

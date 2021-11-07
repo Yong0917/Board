@@ -8,10 +8,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import yong.board.TOTPTokenValidation;
 import yong.board.service.RegisterService;
 import yong.board.vo.MemberVo;
@@ -45,7 +42,7 @@ public class RegisterController {
     }
 
     @ResponseBody   //회원가입 로직
-    @RequestMapping(value = "/registerUser")
+    @PostMapping(value = "/registerUser")
     public String joinMember(MemberVo memberVo){
 
         List<MemberVo> list =registerService.checkMember(memberVo);
@@ -76,7 +73,7 @@ public class RegisterController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/login.do")
+    @GetMapping(value = "/login.do")
     public String Login(MemberVo memberVo, HttpSession session) {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -103,14 +100,14 @@ public class RegisterController {
     }
 
     @ResponseBody   //qrcord 불러오기
-    @RequestMapping(value = "/getImage.do")
+    @GetMapping(value = "/getImage.do")
     public String googleUrl(MemberVo memberVo) {
         String userQrCord = registerService.selectQrCord(memberVo);
         return userQrCord;
     }
 
     @ResponseBody       //구글 유효값 인증
-    @RequestMapping(value = "/googleVerify.do")
+    @GetMapping(value = "/googleVerify.do")
     public String equalCode(MemberVo memberVo, HttpSession session) {
 
         String userSecretKey = registerService.selectSecretKey(memberVo);
@@ -141,6 +138,9 @@ public class RegisterController {
     public void emailCode(MemberVo memberVo){
         Random random = new Random();
         int checkNum = random.nextInt(888888) + 111111;
+
+
+
 
         String toMail = memberVo.getEmail();
         String title = "회원가입 인증 이메일 입니다.";
