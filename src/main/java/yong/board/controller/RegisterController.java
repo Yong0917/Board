@@ -2,9 +2,8 @@ package yong.board.controller;
 
 import org.apache.commons.codec.binary.Base32;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +12,16 @@ import yong.board.TOTPTokenValidation;
 import yong.board.service.RegisterService;
 import yong.board.vo.MemberVo;
 
+import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 
 @Controller
@@ -132,31 +134,51 @@ public class RegisterController {
     }
 
 
-    //email Code 전송
+    //회원가입 email Code 전송
     @ResponseBody
     @RequestMapping(value = "/emailCode", method = RequestMethod.GET)
-    public void emailCode(MemberVo memberVo){
+    public String emailCode(MemberVo memberVo) throws MessagingException {
         Random random = new Random();
-        int checkNum = random.nextInt(888888) + 111111;
+        int checkNum = random.nextInt(888888) + 111111;     //랜덤코드 6자리 생성
 
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setProtocol("smtp");
+        mailSender.setUsername("seungyong917@gmail.com");
+        mailSender.setPassword("testtesttest");
 
+        Properties prop = new Properties();
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.debug", "true");
+        prop.put("mail.smtp.starttls.enable", "true");
+        prop.put("mail.smtp.EnableSSL.enable", "true");
+
+        mailSender.setJavaMailProperties(prop);
 
         String toMail = memberVo.getEmail();
-        String title = "회원가입 인증 이메일 입니다.";
+        String title = "통합게시판 커뮤니티 회원가입 인증 이메일 입니다.";
         String content =
-                "홈페이지를 방문해주셔서 감사합니다." +
+                "통합게시판 커뮤니티를 방문해주셔서 감사합니다." +
                         "<br><br>" +
                         "인증 번호는 " + checkNum + "입니다." +
                         "<br>" +
                         "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+        try{
+            MimeMessage mimeMsg = mailSender.createMimeMessage();
+            mimeMsg.setFrom(new InternetAddress("BoardAdmin@board.com"));
+            mimeMsg.setRecipient(Message.RecipientType.TO, new InternetAddress(toMail));//수취인
+            mimeMsg.setSubject(title, "utf-8");
+            mimeMsg.setContent(content, "text/html; charset=utf-8");
 
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(toMail);
-        simpleMailMessage.setSubject(title);
-        simpleMailMessage.setText(content);
+            mailSender.send(mimeMsg);
 
-        mailSender.send(simpleMailMessage);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return Integer.toString(checkNum);
 
     }
 
