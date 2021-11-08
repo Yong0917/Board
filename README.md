@@ -23,6 +23,7 @@
 * 게시판 작성, 수정, 파일 업로드 기능 
 * 관리자 기능 구현
 * Spring oAuth2를 이용한 SSO 기능 구현
+* 이메일 인증 기능 추가
 -----------
 **프로젝트 화면**
 1. 로그인 화면
@@ -46,9 +47,11 @@
  * 회원 정보 미 입력시 alert 기능
  * ID, 비밀번호, 이름, 나이 입력
  * 비밀번호는 최소 8자 최대 16자, 특수문자 하나 이상 포함
+ * Email 인증 기능 추가 
  
- ![user_register](https://user-images.githubusercontent.com/65889807/132848395-70e7532d-28d0-481a-9e7b-cde4c9d1afde.png)
- 
+ ![user_register](https://user-images.githubusercontent.com/65889807/140730583-bef992f8-1de5-437c-86ff-3aec8c923237.png)
+ ![valifyEmail](https://user-images.githubusercontent.com/65889807/140730626-97af6c49-9e20-4b46-8a4c-e6724921c31b.png)
+
  ----------- 
 **3. Google OTP 화면 구현**             
 * Google OTP 앱을 다운받아 생성된 계정으로 6자리 코드입력(BoardCommunity: (admin))
