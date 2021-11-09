@@ -11,7 +11,7 @@
 * 영화 검색
 * 지역 검색
 * 회원 정보 수정
-* 로그인 SSO 구현(구글, 카카오, 네이버)
+* 로그인 SSO 구현(구글, 카카오, 네이버) (추가)
 
 ----------- 
 **주요 기술**
@@ -22,19 +22,23 @@
 * 세션 처리 및 권한 별 기능 구분
 * 게시판 작성, 수정, 파일 업로드 기능 
 * 관리자 기능 구현
-* Spring oAuth2를 이용한 SSO 기능 구현
-* 이메일 인증 기능 추가
+* Spring oAuth2를 이용한 SSO 기능 구현 (추가)
+* 이메일 인증 기능 추가 (추가)
+* 다국어 기능 추가 (추가)
 -----------
 **프로젝트 화면**
 1. 로그인 화면
-<p align="center"><img src="https://user-images.githubusercontent.com/65889807/139256132-762cd76d-8d8c-4b3f-9ce9-7580334dc6d2.png">
+2. 다국어 기능 추가(추가)
+
+<p align="center"><img src="https://user-images.githubusercontent.com/65889807/140918815-6e767fda-5ed2-4bff-ba85-28dc3552c138.png">
+
 
  -----------
- 
+
 **1-1) Google SSO, Naver SSO, Kakao SSO**
- * Spring oAuth 적용
- * 계정 정보를 받으면 DB에 저장(이미 SSO정보가 DB에 있을시 redirect)
- * SSO 로그인 성공 시 Session 저장 및 main화면으로 redirect
+ * Spring oAuth 적용 (추가)
+ * 계정 정보를 받으면 DB에 저장(이미 SSO정보가 DB에 있을시 redirect) (추가)
+ * SSO 로그인 성공 시 Session 저장 및 main화면으로 redirect (추가)
 
 <p align="left">
  <img src="https://user-images.githubusercontent.com/65889807/139256350-2ece58ab-1995-42ea-8c27-b0e02aabbe7c.png" width="450" height="622">
@@ -47,10 +51,12 @@
  * 회원 정보 미 입력시 alert 기능
  * ID, 비밀번호, 이름, 나이 입력
  * 비밀번호는 최소 8자 최대 16자, 특수문자 하나 이상 포함
- * Email 인증 기능 추가 
+ * Email 인증 기능 추가 (추가)
+ * 다국어 기능 추가 (추가)
  
  ![user_register](https://user-images.githubusercontent.com/65889807/140730583-bef992f8-1de5-437c-86ff-3aec8c923237.png)
  ![valifyEmail](https://user-images.githubusercontent.com/65889807/140730626-97af6c49-9e20-4b46-8a4c-e6724921c31b.png)
+ ![user_register_국제화](https://user-images.githubusercontent.com/65889807/140919115-c71ababb-4212-4913-b159-071389e3b12b.png)
 
  ----------- 
 **3. Google OTP 화면 구현**             
