@@ -165,20 +165,20 @@
                             <div >
 
                                 <div class="mt-1">
-                                    <h1 class="h4 text-gray-900 mb-2 font-weight-bold" style="font-size: 35px" >회원 가입</h1>
+                                    <h1 class="h4 text-gray-900 mb-2 font-weight-bold" style="font-size: 35px" th:text="#{userJoin.title}">회원 가입</h1>
                                 </div>
 
                                 <input  class="form-control form-control-user mb-3"
                                         id="userid"
-                                        placeholder="아이디">
+                                        th:placeholder="#{userJoin.id}">
 
                                 <input  class="form-control form-control-user mb-3"
                                         id="password" type="password"
-                                        placeholder="비밀번호" onchange="check_pw()">
+                                        th:placeholder="#{userJoin.pw}" onchange="check_pw()">
 
                                 <input  class="form-control form-control-user mb-1"
                                         id="passwordCheck" type="password"
-                                        placeholder="비밀번호 재확인" onchange="check_pw()">
+                                        th:placeholder="#{userJoin.pw2}" onchange="check_pw()">
 
                                 <div class="mb-2" style="text-align: left">
                                     <span id="checkPw">&nbsp</span>
@@ -186,21 +186,21 @@
 
                                 <input  class="form-control form-control-user mb-3"
                                         id="username"
-                                        placeholder="이름">
+                                        th:placeholder="#{userJoin.name}">
 
                                 <input  class="form-control form-control-user mb-3"
                                         id="userAge" type="number" min="1" max="110"
-                                        placeholder="나이">
+                                        th:placeholder="#{userJoin.age}">
 
                                 <input  class="form-control form-control-user mb-3"
                                         id="email"
-                                        placeholder="이메일을 입력하세요.">
+                                        th:placeholder="#{userJoin.email}">
                                 <div class="col-lg-12" style="display: flex; margin: 15px">
                                     <input  class="form-control form-control-user mb-3" style="margin-right: 20px"
                                             id="verifyCode" disabled="disabled" onchange="checkCode()">
                                     <button class="btn btn-primary btn-user btn-block" style="height: 40px"
-                                            id="verifyButton" onclick="emailCheck()">
-                                        인증번호 전송
+                                            id="verifyButton" onclick="emailCheck()" th:text="#{userJoin.code}">
+
                                     </button>
                                 </div>
                                 <div class="mb-2" style="text-align: left">
@@ -208,8 +208,8 @@
                                 </div>
 
 
-                                <button class="btn btn-primary btn-user btn-block" id="button3" onclick="check()">
-                                    회원 가입
+                                <button class="btn btn-primary btn-user btn-block" id="button3" onclick="check()" th:text="#{userJoin.join}">
+
                                 </button>
 
                             </div>
