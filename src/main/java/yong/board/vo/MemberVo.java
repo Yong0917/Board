@@ -10,7 +10,6 @@ import java.util.Collection;
 
 @Getter
 @Setter
-@Data
 public class MemberVo implements UserDetails {
 
     private String id;
