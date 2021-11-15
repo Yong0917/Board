@@ -87,6 +87,10 @@
                     window.alert("회원가입이 완료되었습니다");
                     location.href="/";
                 }
+                else if(data == 'error'){
+                    alert("Error")
+                    return;
+                }
                 else {
                     window.alert("이미 사용중인 아이디 입니다.");
                     document.getElementById('userid').value="";

@@ -7,6 +7,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import yong.board.TOTPTokenValidation;
 import yong.board.service.RegisterService;
@@ -45,7 +47,11 @@ public class RegisterController {
 
     @ResponseBody   //회원가입 로직
     @PostMapping(value = "/registerUser")
-    public String joinMember(MemberVo memberVo){
+    public String joinMember(@Validated MemberVo memberVo, BindingResult bindingResult){
+
+        if (bindingResult.hasErrors()) {        //valid error
+            return "Error";
+        }
 
         List<MemberVo> list =registerService.checkMember(memberVo);
 

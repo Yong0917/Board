@@ -239,7 +239,12 @@
             success: function (data) {
                 if(data != '') {
                     alert(data);
-                } else {
+                }
+                else if(data == 'Error'){
+                    alert("Error")
+                    return;
+                }
+                else {
                     alert("비밀번호가 변경되었습니다.");
                     $('#userPasswordModal').modal("hide");
                     clearPwdUpdateModal();
