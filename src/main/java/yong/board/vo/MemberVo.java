@@ -1,6 +1,6 @@
 package yong.board.vo;
 
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
