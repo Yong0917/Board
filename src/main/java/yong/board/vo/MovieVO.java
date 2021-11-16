@@ -1,10 +1,12 @@
 package yong.board.vo;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class MovieVO {
     public String title;
     public String link;

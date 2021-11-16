@@ -1,11 +1,12 @@
 package yong.board.vo;
 
-import lombok.Data;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class LocationVO {
     public int total;
     public String category;

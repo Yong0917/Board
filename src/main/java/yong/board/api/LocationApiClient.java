@@ -48,29 +48,20 @@ public class LocationApiClient {
 
             for (int i = 0; i < item.size(); i++) {
 
-                LocationVO L = new LocationVO();
                 JSONObject tmp = (JSONObject) item.get(i);
 
-//                int total = (int) tmp.get("total");
-                String category = (String) tmp.get("category");
-                String title = (String) tmp.get("title");
-                String link = (String) tmp.get("link");
-                String description = (String) tmp.get("description");
-                String address = (String) tmp.get("address");
-                String roadAddress = (String) tmp.get("roadAddress");
-//                String mapx = (String) tmp.get("mapy");
-//                String mapy = (String) tmp.get("mapx");
-
-
-//                L.setTotal(total);
-                L.setCategory(category);
-                L.setTitle(title);
-                L.setLink(link);
-                L.setDescription(description);
-                L.setAddress(address);
-                L.setRoadAddress(roadAddress);
-//                L.setMapx(mapx);
-//                L.setMapy(mapy);
+                //builder 패턴으로 수정
+                LocationVO L = LocationVO.builder()
+                        .category((String) tmp.get("category"))
+                        .title((String) tmp.get("title"))
+                        .link((String) tmp.get("link"))
+                        .description((String) tmp.get("description"))
+                        .address((String) tmp.get("address"))
+                        .roadAddress((String) tmp.get("roadAddress"))
+//                        .total((int)tmp.get("total"))
+//                        .mapx((String)tmp.get("mapx"))
+//                        .mapy((String)tmp.get("mapy"))
+                        .build();
 
                 if (L != null)
                     list.add(L);

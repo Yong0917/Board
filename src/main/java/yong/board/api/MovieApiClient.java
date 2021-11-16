@@ -44,24 +44,21 @@ public class MovieApiClient {
             list = new ArrayList<MovieVO>();        //json을 Vo의 list형태로 맞춰줌
 
             for (int i = 0; i < item.size(); i++) {
-                MovieVO m = new MovieVO();
+
                 JSONObject tmp = (JSONObject) item.get(i);
-                String title = (String) tmp.get("title");
-                String link = (String) tmp.get("link");
-                String image = (String) tmp.get("image");
-                String subtitle = (String) tmp.get("subtitle");
-                String pubDate = (String) tmp.get("pubDate");
-                String director = (String) tmp.get("director");
-                String actor = (String) tmp.get("actor");
-                String userRating = (String) tmp.get("userRating");
-                m.setTitle(title);
-                m.setLink(link);
-                m.setImage(image);
-                m.setSubtitle(subtitle);
-                m.setPubDate(pubDate);
-                m.setDirector(director);
-                m.setActor(actor);
-                m.setUserRating(userRating);
+
+                //builder 패턴으로 수정
+                MovieVO m = MovieVO.builder()
+                        .title((String) tmp.get("title"))
+                        .link((String) tmp.get("link"))
+                        .image((String) tmp.get("image"))
+                        .subtitle((String) tmp.get("subtitle"))
+                        .pubDate((String) tmp.get("pubDate"))
+                        .director((String) tmp.get("director"))
+                        .actor((String) tmp.get("actor"))
+                        .userRating((String) tmp.get("userRating"))
+                        .build();
+
                 if (m != null)
                     list.add(m);
             }
