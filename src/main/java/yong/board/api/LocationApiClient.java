@@ -5,6 +5,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,9 +22,15 @@ import java.util.List;
 public class LocationApiClient {
 
     private final RestTemplate restTemplate;
-    private final String CLIENT_ID = "CWKP9jGZMGx7VvBz3I3e";
-    private final String CLIENT_SECRET = "z4X4Ld4Yn9";
-    private final String OpenNaverLocalUrl_getLocal = "https://openapi.naver.com/v1/search/local.json?query={keyword}&display=10&sort=comment";
+
+    @Value("${locationApi.ID}")
+    private String CLIENT_ID;
+
+    @Value("${locationApi.SECRET}")
+    private String CLIENT_SECRET;
+
+    @Value("${locationApi.URL}")
+    private String OpenNaverLocalUrl_getLocal;
 
     public List<LocationVO> requestLocation(String keyword) {
         final HttpHeaders headers = new HttpHeaders(); // 헤더에 key들을 담아준다.
