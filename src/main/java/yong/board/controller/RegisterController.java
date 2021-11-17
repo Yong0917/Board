@@ -12,13 +12,17 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import yong.board.TOTPTokenValidation;
 import yong.board.service.RegisterService;
+import yong.board.vo.LoginVO;
 import yong.board.vo.MemberVo;
+import yong.board.vo.RegisterVO;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
@@ -47,13 +51,13 @@ public class RegisterController {
 
     @ResponseBody   //회원가입 로직
     @PostMapping(value = "/registerUser")
-    public String joinMember(@Validated MemberVo memberVo, BindingResult bindingResult){
+    public String joinMember(@Validated RegisterVO registerVO, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()) {        //valid error
             return "Error";
         }
 
-        List<MemberVo> list =registerService.checkMember(memberVo);
+        List<RegisterVO> list =registerService.checkMember(registerVO);
 
         String retVal = null;
 
@@ -61,14 +65,14 @@ public class RegisterController {
         if(list.size() == 0) {
 
             String secretKey = generateSecretKey();
-            memberVo.setSecretKey(secretKey);
+            registerVO.setSecretKey(secretKey);
 
-            String qrId = "Board Community"+"("+memberVo.getId()+")"; //QRcord 화면에 표시할 id
+            String qrId = "Board Community"+"("+registerVO.getId()+")"; //QRcord 화면에 표시할 id
             String barcodeUrl = getGoogleAuthenticatorBarCode(secretKey, qrId);     //sercret key와 qrid 넘겨줌
-            memberVo.setQrCord(barcodeUrl);
-            memberVo.setAuth("User");
+            registerVO.setQrCord(barcodeUrl);
+            registerVO.setAuth("User");
 
-            registerService.joinUser(memberVo);
+            registerService.joinUser(registerVO);
             retVal = "Success";
         }
         // 기존에 요청했던 고객일 경우
@@ -80,47 +84,59 @@ public class RegisterController {
         return retVal;
     }
 
-    @ResponseBody
-    @GetMapping(value = "/login.do")
-    public String Login(MemberVo memberVo, HttpSession session) {
+    @PostMapping("/login.do")
+    public String Login(LoginVO loginVO, HttpServletRequest request, Model model) {
+
+//        if (bindingResult.hasErrors()) {        //valid error
+//            return "Login";
+//        }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        MemberVo user = (MemberVo) registerService.loadUserByUsername(memberVo.getId());
+        MemberVo user = (MemberVo) registerService.loadUserByUsername(loginVO.getId()); // user 정보 모두
 
         if (user == null) { // user값 체크
-            return "idNull";
+            return "Login";
 
         } else {
             // 비밀번호 비교
-            if (!passwordEncoder.matches(memberVo.getPassword(), user.getPassword())) {
+            if (!passwordEncoder.matches(loginVO.getPassword(), user.getPassword())) {
 
-                return "pwCheck";
+                return "Login";
 
             } else {
+                //로그인 성공 처리
+                //세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
+                HttpSession session = request.getSession();
+                session.setAttribute("loginCheck", "SUCCESS");
 
-                //검증 성공
-                session.setAttribute("loginCheck", true);
-                return "Success";
+                model.addAttribute("loginMember",user);
+
+                return "mfaLogin";
+
             }
 
         }
     }
 
-    @ResponseBody   //qrcord 불러오기
-    @GetMapping(value = "/getImage.do")
-    public String googleUrl(MemberVo memberVo) {
-        String userQrCord = registerService.selectQrCord(memberVo);
-        return userQrCord;
+    @GetMapping(value = "/mfaLogin")
+    public String mfaLogin(HttpSession session, Model model) {
+        String loginCheck = (String) session.getAttribute("loginCHeck");
+
+        // login 통과못하면 Login 화면으로
+        if(loginCheck == null || "".equals(loginCheck)){
+           return "redirect:/";
+        }
+        return "mfaLogin";
     }
 
-    @ResponseBody       //구글 유효값 인증
-    @GetMapping(value = "/googleVerify.do")
-    public String equalCode(MemberVo memberVo, HttpSession session) {
+    //구글 유효값 인증
+    @PostMapping("/googleVerify.do")
+    public String equalCode(MemberVo memberVo, HttpSession session,Model model) {
 
         String userSecretKey = registerService.selectSecretKey(memberVo);
-        String inputCode =  memberVo.getMfaCode();
 
+        String inputCode =  memberVo.getMfaCode();
         //입력한 값과 secretkey 비교
         if (TOTPTokenValidation.validate(inputCode,userSecretKey)) {
             //     if (TOTPTokenValidation.validate(inputCode,userSecretKey)) {
@@ -128,14 +144,16 @@ public class RegisterController {
 
             //로그인 성공 시 세션값 설정
             session.setAttribute("loginCheck",true);
-            session.setAttribute("id",memberVo.getId());
+            session.setAttribute("id",user.getId());
             session.setAttribute("auth",user.getAuth());
             session.setAttribute("name",user.getUsername());
             session.setAttribute("age",user.getAge());
-            return "success";
+            session.setAttribute("loginUser",user);
+            return "main";
         }
         else {
-            return "fail";
+            model.addAttribute("loginMember",memberVo);
+            return "mfaLogin";
         }
     }
 
