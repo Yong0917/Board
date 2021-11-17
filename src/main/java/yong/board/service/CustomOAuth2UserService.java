@@ -13,6 +13,7 @@ import yong.board.user.OAuthAttributes;
 import yong.board.user.SessionUser;
 import yong.board.user.User;
 import yong.board.vo.MemberVo;
+import yong.board.vo.RegisterVO;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
@@ -52,16 +53,16 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 //                .orElse(attributes.toEntity());
         User user = new User(attributes.getEmail(),attributes.getName(),attributes.getPicture());
 
-        MemberVo member = new MemberVo();
-        member.setId(attributes.getEmail());
-        member.setUsername(attributes.getName());
-        member.setAuth("User");
+        RegisterVO registerVO = new RegisterVO();
+        registerVO.setId(attributes.getEmail());
+        registerVO.setUsername(attributes.getName());
+        registerVO.setAuth("User");
 
         //SSO전용 DB등록
-        List<MemberVo> list =registerService.checkSSO(member);
+        List<RegisterVO> list =registerService.checkSSO(registerVO);
 
         if(list.size() == 0) {
-            registerService.joinUser(member);       //SSO정보 등록
+            registerService.joinUser(registerVO);       //SSO정보 등록
             return user;
         }
         else        //이미 존재할시 return

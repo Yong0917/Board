@@ -38,7 +38,7 @@ public class MainController {
             return "main";
         }
         else
-            return "login"; //session 없으면 로그인화면
+            return "Login"; //session 없으면 로그인화면
     }
 
     @RequestMapping(value="/logout")        //로그아웃 후 세션 제거

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import yong.board.mapper.RegisterMapper;
 import yong.board.vo.MemberVo;
+import yong.board.vo.RegisterVO;
 
 import java.util.List;
 
@@ -21,18 +22,18 @@ public class RegisterService implements UserDetailsService {
         this.registerMapper = registerMapper;
     }
 
-    public List<MemberVo> checkMember(MemberVo memberVo) {
-        return registerMapper.checkMember(memberVo);
+    public List<RegisterVO> checkMember(RegisterVO registerVO) {
+        return registerMapper.checkMember(registerVO);
     }
 
-    public void joinUser(MemberVo memberVo) {
+    public void joinUser(RegisterVO registerVO) {
         //패스워드 암호화
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if(memberVo.getPassword() == null)      //SSO는 패스워드 필요X
-            registerMapper.registerSSO(memberVo);       //SSO전용
+        if(registerVO.getPassword() == null)      //SSO는 패스워드 필요X
+            registerMapper.registerSSO(registerVO);       //SSO전용
         else{
-            memberVo.setPassword(passwordEncoder.encode(memberVo.getPassword()));
-            registerMapper.joinMember(memberVo);
+            registerVO.setPassword(passwordEncoder.encode(registerVO.getPassword()));
+            registerMapper.joinMember(registerVO);
         }
 
     }
@@ -63,7 +64,7 @@ public class RegisterService implements UserDetailsService {
     }
 
     //SSO 전적 확인
-    public List<MemberVo> checkSSO(MemberVo member) {
+    public List<RegisterVO> checkSSO(RegisterVO member) {
         return registerMapper.checkSSO(member);
     }
 }
