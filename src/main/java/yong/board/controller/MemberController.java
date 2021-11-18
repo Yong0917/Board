@@ -27,8 +27,7 @@ public class MemberController {
     @GetMapping("/member")  //세션값 없으면 redirect
     public String memberInfo(Model model, HttpSession session) {
 
-        if(session.getAttribute("id")==null) return "redirect:/";
-        else return "member";
+       return "member";
 
     }
 

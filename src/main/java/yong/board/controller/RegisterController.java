@@ -43,7 +43,7 @@ public class RegisterController {
     @Autowired
     private JavaMailSender mailSender;
 
-    @GetMapping("/userjoin")    //회원가입
+    @GetMapping("/userJoin")    //회원가입
     public String newUser(Model model) {
 
         return "userJoin";
@@ -85,9 +85,10 @@ public class RegisterController {
     }
 
     @PostMapping("/login.do")
-    public String Login(LoginVO loginVO, HttpServletRequest request, Model model) {
+    public String Login(LoginVO loginVO, HttpServletRequest request, Model model,HttpSession session) {
 
 //        if (bindingResult.hasErrors()) {        //valid error
+//            System.out.println(bindingResult);
 //            return "Login";
 //        }
 
@@ -107,7 +108,6 @@ public class RegisterController {
             } else {
                 //로그인 성공 처리
                 //세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
-                HttpSession session = request.getSession();
                 session.setAttribute("loginCheck", "SUCCESS");
 
                 model.addAttribute("loginMember",user);
@@ -119,16 +119,16 @@ public class RegisterController {
         }
     }
 
-    @GetMapping(value = "/mfaLogin")
-    public String mfaLogin(HttpSession session, Model model) {
-        String loginCheck = (String) session.getAttribute("loginCHeck");
-
-        // login 통과못하면 Login 화면으로
-        if(loginCheck == null || "".equals(loginCheck)){
-           return "redirect:/";
-        }
-        return "mfaLogin";
-    }
+//    @GetMapping(value = "/mfaLogin")
+//    public String mfaLogin(HttpSession session, Model model) {
+//        String loginCheck = (String) session.getAttribute("loginCheck");
+//
+//        // login 통과못하면 Login 화면으로
+//        if(loginCheck == null || "".equals(loginCheck)){
+//           return "redirect:/";
+//        }
+//        return "mfaLogin";
+//    }
 
     //구글 유효값 인증
     @PostMapping("/googleVerify.do")
@@ -143,12 +143,12 @@ public class RegisterController {
             MemberVo user = registerService.selectMember(memberVo.getId());
 
             //로그인 성공 시 세션값 설정
-            session.setAttribute("loginCheck",true);
             session.setAttribute("id",user.getId());
             session.setAttribute("auth",user.getAuth());
             session.setAttribute("name",user.getUsername());
             session.setAttribute("age",user.getAge());
             session.setAttribute("loginUser",user);
+            session.removeAttribute("loginCheck");
             return "main";
         }
         else {
