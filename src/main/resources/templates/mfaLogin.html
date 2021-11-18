@@ -36,6 +36,7 @@
                                         id="mfaCode" name="mfaCode"
                                         placeholder="Enter 6 codes..."  onKeyPress="if (event.keyCode==13){googleVerify();}">
                                 <input name="id" id="id" th:value="${loginMember.id}" hidden="true">
+                                <input name="qrCord" id="qrCord" th:value="${loginMember.qrCord}" hidden="true">
                                 <button class="btn btn-primary btn-user btn-block " type="submit">
                                     Verify
                                 </button>
