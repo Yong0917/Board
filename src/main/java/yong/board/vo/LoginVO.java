@@ -9,9 +9,9 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class LoginVO {
 
-    @NotEmpty
+    @NotEmpty(message = "id를 입력해주세요.")
     private String id;
 
-    @NotEmpty
+    @NotEmpty@NotEmpty(message = "비밀번호를 입력해주세요.")
     private String password;
 }
