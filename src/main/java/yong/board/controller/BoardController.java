@@ -191,66 +191,7 @@ public class BoardController {
         request.setCharacterEncoding("UTF-8");
         FileVO fileVO = boardService.fileDetailService(bno);
 
-        //파일 업로드된 경로
-        try{
-            String fileUrl = fileVO.getFileurl();
-            fileUrl += "/";
-            String savePath = fileUrl;
-            String fileName = fileVO.getFilename();
-
-            //실제 내보낼 파일명
-            String oriFileName = fileVO.getFileOriName();
-            InputStream in = null;
-            OutputStream os = null;
-            File file = null;
-            boolean skip = false;
-            String client = "";
-
-            //파일을 읽어 스트림에 담기
-            try{
-                file = new File(savePath, fileName);
-                in = new FileInputStream(file);
-            } catch (FileNotFoundException fe) {
-                skip = true;
-            }
-
-            client = request.getHeader("User-Agent");
-
-            //파일 다운로드 헤더 지정
-            response.reset();
-            response.setContentType("application/octet-stream");
-            response.setHeader("Content-Description", "JSP Generated Data");
-
-            if (!skip) {
-                // IE
-                if (client.indexOf("MSIE") != -1) {
-                    response.setHeader("Content-Disposition", "attachment; filename=\""
-                            + java.net.URLEncoder.encode(oriFileName, "UTF-8").replaceAll("\\+", "\\ ") + "\"");
-                    // IE 11 이상.
-                } else if (client.indexOf("Trident") != -1) {
-                    response.setHeader("Content-Disposition", "attachment; filename=\""
-                            + java.net.URLEncoder.encode(oriFileName, "UTF-8").replaceAll("\\+", "\\ ") + "\"");
-                } else {
-                    // 한글 파일명 처리
-                    response.setHeader("Content-Disposition",
-                            "attachment; filename=\"" + new String(oriFileName.getBytes("UTF-8"), "ISO8859_1") + "\"");
-                    response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
-                }
-                response.setHeader("Content-Length", "" + file.length());
-                os = response.getOutputStream();
-                byte b[] = new byte[(int) file.length()];
-                int leng = 0;
-                while ((leng = in.read(b)) > 0) {
-                    os.write(b, 0, leng);
-                }
-            } else {
-                response.setContentType("text/html;charset=UTF-8");
-            }
-            in.close();
-            os.close();
-        } catch (Exception e) {
-            System.out.println("ERROR : " + e.getMessage());
-        }
+        boardService.fileDownload(fileVO,request,response); //파일 다운로드
 
     }
 
