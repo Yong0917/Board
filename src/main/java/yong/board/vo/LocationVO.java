@@ -8,14 +8,14 @@ import lombok.Setter;
 @Setter
 @Builder
 public class LocationVO {
-    public int total;
-    public String category;
-    public String title;
-    public String link;
-    public String description;
-    public String address;
-    public String roadAddress;
-    public String mapx;
-    public String mapy;
+    private int total;
+    private String category;
+    private String title;
+    private String link;
+    private String description;
+    private String address;
+    private String roadAddress;
+    private String mapx;
+    private String mapy;
 
 }
