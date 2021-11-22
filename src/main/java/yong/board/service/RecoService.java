@@ -2,7 +2,6 @@ package yong.board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import yong.board.mapper.BoardMapper;
 import yong.board.mapper.RecoMapper;
 import yong.board.vo.RecoVO;
 

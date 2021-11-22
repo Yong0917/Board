@@ -12,7 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import yong.board.vo.LocationVO;
-import yong.board.vo.MovieVO;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import yong.board.user.OAuthAttributes;
 import yong.board.user.SessionUser;
 import yong.board.user.User;
-import yong.board.vo.MemberVo;
 import yong.board.vo.RegisterVO;
 
 import javax.servlet.http.HttpSession;
@@ -48,9 +47,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     // 유저 생성 및 수정 서비스 로직
     private User saveOrUpdate(OAuthAttributes attributes) {
-//        User user = userRepository.findByEmail(attributes.getEmail())
-//                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
-//                .orElse(attributes.toEntity());
+
         User user = new User(attributes.getEmail(),attributes.getName(),attributes.getPicture());
 
         RegisterVO registerVO = new RegisterVO();
@@ -68,6 +65,5 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         else        //이미 존재할시 return
             return user;
 
-//        return userRepository.save(user);
     }
 }

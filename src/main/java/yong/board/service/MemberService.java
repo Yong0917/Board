@@ -5,11 +5,9 @@ import org.springframework.stereotype.Service;
 import yong.board.mapper.MemberMapper;
 import yong.board.vo.MemberVo;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
