@@ -3,13 +3,9 @@ package yong.board.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.Collection;
 
 @Getter

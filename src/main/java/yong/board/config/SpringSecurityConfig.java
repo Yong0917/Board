@@ -13,9 +13,6 @@ import yong.board.service.CustomOAuth2UserService;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
-   // private UserDetailsService memberService;
-
-    MyAuthenticationProvider myAuthenticationProvider;
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
@@ -42,42 +39,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-//    @Override
-//    public void configure(WebSecurity web) throws Exception
-//    {
-//        web.ignoring()
-//                .antMatchers("/resources/**")
-//                .antMatchers("/css/**")
-//                .antMatchers("/vendor/**")
-//                .antMatchers("/js/**")
-//                .antMatchers("/favicon*/**")
-//                .antMatchers("/img/**")
-//                .antMatchers("/image/**");
-//        ;/*test 시에는 추가해야함*/
-//    }
-
-/*    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
-    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
-/*    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(myAuthenticationProvider);
-    }*/
-/*    @Bean
-    public AuthenticationSuccessHandler successHandler() {
-        CustomAuthenticationSuccessHandler successHandler = new CustomAuthenticationSuccessHandler();
-        successHandler.setDefaultTargetUrl("/");
-        return successHandler;
-
-    }*/
 
 
 }

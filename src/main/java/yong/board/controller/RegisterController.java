@@ -111,17 +111,6 @@ public class RegisterController {
         }
     }
 
-//    @GetMapping(value = "/mfaLogin")
-//    public String mfaLogin(HttpSession session, Model model) {
-//        String loginCheck = (String) session.getAttribute("loginCheck");
-//
-//        // login 통과못하면 Login 화면으로
-//        if(loginCheck == null || "".equals(loginCheck)){
-//           return "redirect:/";
-//        }
-//        return "mfaLogin";
-//    }
-
     //구글 유효값 인증
     @PostMapping("/googleVerify.do")
     public String equalCode(MemberVo memberVo, HttpSession session,Model model) {

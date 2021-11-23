@@ -101,9 +101,9 @@ public class BoardController {
             do {
                 destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
                 destinationFile = new File(fileUrl + destinationFileName);
-//                new File(fileUrl+ destinationFileName);
+
             } while (destinationFile.exists());
-            //RandomStringUtils
+
             destinationFile.getParentFile().mkdirs();
             files.transferTo(destinationFile);
 
