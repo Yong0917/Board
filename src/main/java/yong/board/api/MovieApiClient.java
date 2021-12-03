@@ -33,18 +33,19 @@ public class MovieApiClient {
 
     public List<MovieVO> requestMovie(String keyword) {
         final HttpHeaders headers = new HttpHeaders(); // 헤더에 key들을 담아준다.
-        headers.set("X-Naver-Client-Id", CLIENT_ID);
-        headers.set("X-Naver-Client-Secret", CLIENT_SECRET);
+
+        headers.set("X-Naver-Client-Id", CLIENT_ID);        //header에 clinetId
+        headers.set("X-Naver-Client-Secret", CLIENT_SECRET);    //header에 clinetSecretkey
         final HttpEntity<String> entity = new HttpEntity<>(headers);
 
 
-        String response = restTemplate.exchange(OpenNaverMovieUrl_getMovies, HttpMethod.GET, entity, String.class, keyword).getBody();
+        String response = restTemplate.exchange(OpenNaverMovieUrl_getMovies, HttpMethod.GET, entity, String.class, keyword).getBody();  //Get형식으로 호출
         //api호출
 
         JSONParser parser = new JSONParser();
         JSONObject obj = null;
         try {
-            obj = (JSONObject) parser.parse(response);
+            obj = (JSONObject) parser.parse(response);      //JsonArray형식으로 바꿔줌
             JSONArray item = (JSONArray) obj.get("items");
 
             List<MovieVO> list = null;
@@ -54,7 +55,7 @@ public class MovieApiClient {
 
                 JSONObject tmp = (JSONObject) item.get(i);
 
-                //builder 패턴으로 수정
+                //builder 패턴으로 수정           VO맵핑
                 MovieVO m = MovieVO.builder()
                         .title((String) tmp.get("title"))
                         .link((String) tmp.get("link"))

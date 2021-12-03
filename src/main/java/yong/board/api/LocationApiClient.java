@@ -34,19 +34,19 @@ public class LocationApiClient {
     public List<LocationVO> requestLocation(String keyword) {
         final HttpHeaders headers = new HttpHeaders(); // 헤더에 key들을 담아준다.
 
-        headers.set("X-Naver-Client-Id", CLIENT_ID);
-        headers.set("X-Naver-Client-Secret", CLIENT_SECRET);
+        headers.set("X-Naver-Client-Id", CLIENT_ID);        //header에 clientID
+        headers.set("X-Naver-Client-Secret", CLIENT_SECRET); //header에 secretKey
 
         final HttpEntity<String> entity = new HttpEntity<>(headers);
 
 
-        String response = restTemplate.exchange(OpenNaverLocalUrl_getLocal, HttpMethod.GET, entity, String.class, keyword).getBody();
+        String response = restTemplate.exchange(OpenNaverLocalUrl_getLocal, HttpMethod.GET, entity, String.class, keyword).getBody(); // Get형식으로 파라미터를 이용해서 호출한다.
         //api호출
 
         JSONParser parser = new JSONParser();
         JSONObject obj = null;
         try {
-            obj = (JSONObject) parser.parse(response);
+            obj = (JSONObject) parser.parse(response);      //JSONArray형식으로 바꿈
             JSONArray item = (JSONArray) obj.get("items");
 
             List<LocationVO> list = null;
@@ -56,7 +56,7 @@ public class LocationApiClient {
 
                 JSONObject tmp = (JSONObject) item.get(i);
 
-                //builder 패턴으로 수정
+                //builder 패턴으로 수정      VO랑 맵핑
                 LocationVO L = LocationVO.builder()
                         .category((String) tmp.get("category"))
                         .title((String) tmp.get("title"))
