@@ -23,17 +23,17 @@ public class BoardService {
         this.boardmapper = boardmapper;
 
     }
-
+    //게사판 리스트
     public List<BoardVO> boardListService() throws Exception{
 
         return boardmapper.boardList();
     }
-
+    //게시판 상세
     public BoardVO boardDetailService(int bno) throws Exception{
 
         return boardmapper.boardDetail(bno);
     }
-
+    //게시판 작성 삽입
     public void boardInsertService(BoardVO boardVO) throws Exception{
         boardmapper.boardInsert(boardVO);
     }
@@ -44,38 +44,38 @@ public class BoardService {
         return boardmapper.selectBoardList(param);
     }
 
-
+    //게시판 업데이트
     public void boardUpdateService(BoardVO boardVO) throws Exception{
 
         boardmapper.boardUpdate(boardVO);
     }
-
+    //게시판삭제
     public void boardDeleteService(int bno) throws Exception{
 
         boardmapper.boardDelete(bno);
     }
-
+    //파일삭제
     public void fileDeleteService(int bno) throws Exception{
 
         boardmapper.fileDelete(bno);
     }
-
+    //댓글삭제
     public void commentDeleteService(int bno) throws Exception{
 
         boardmapper.commentDelete(bno);
     }
 
-
+    //파일 업로드
     public void fileInsertService(FileVO fileVO) throws Exception{
         boardmapper.FileInsert(fileVO);
     }
-
+    //파일상세
     public FileVO fileDetailService(int bno) throws Exception{
 
         return boardmapper.fileDetail(bno);
     }
 
-
+    //클릭 갯수
     public int updateReviewCnt(int bno) throws Exception {
         return boardmapper.updateReviewCnt(bno);
     }
@@ -84,6 +84,7 @@ public class BoardService {
         return boardmapper.selectRscList(param);
     }
 
+    //파일다운로드로직
     public void fileDownload(FileVO fileVO, HttpServletRequest request, HttpServletResponse response) {
 
         try{
